@@ -252,12 +252,7 @@ class DatabaseClient {
     )
   }
 
-  async getParticipantVersionId(participantName, participantVersion) {
-
-    // SELECT participantVersionId from participantVersion 
-    // JOIN participants ON partipants.participantId = participantVersions.participantId
-    // WHERE participantName = $1 AND participantVersion = $2;
-    
+  async getParticipantVersion(participantName, participantVersion) {
      return (await ParticipantVersion
       .query()
       .select('participantVersionId')

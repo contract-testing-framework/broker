@@ -19,24 +19,24 @@ router.patch('/', async (req, res) => {
   const { participantName, participantVersion, environmentName, deployed } = req.body 
 
   if (!participantName || !participantVersion || !environmentName || deployed === undefined) {
-    res.status(400).json({ error: 'Request body is invalid' });
-    return;
+    return res.status(400).json({ error: 'Request body is invalid' });
   }
 
   const environmentRecord = await db.createEnvironment(environmentName);
 
-  // 
-  const participantVersionId = await db.getParticipantVersionId(participantName, participantVersion)
+  const participantVersionRecord = await db.getParticipantVersion(participantName, participantVersion);
 
-  if (!participantVersionId) {
-    res.status(400).json({error: 'Participant does not exist'})
-    return;
+  if (!participantVersionRecord) {
+    return res.status(400).json({error: 'Participant version does not exist'})
   }
 
   if (deployed) {
-    await db.addParticipantVersionToEnvironment(participantVersionId, environmentRecord.environmentId)
+    await db.addParticipantVersionToEnvironment(
+      participantVersionRecord.participantVersionId, 
+      environmentRecord.environmentId
+    );
   } else {
-    await db.removeParticipantFromEnvironment(participantVersionId)
+    await db.removeParticipantFromEnvironment(participantVersionRecord.participantVersionId);
   }
 
   res.status(200).json(req.body);
