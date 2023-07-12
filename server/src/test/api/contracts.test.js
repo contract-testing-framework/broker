@@ -24,8 +24,8 @@ describe("POST /api/contracts", () => {
   db.getParticipant = jest.fn();
   db.getParticipant.mockResolvedValue(participant);
 
-  db.participantVersionExists = jest.fn();
-  db.participantVersionExists.mockResolvedValue(false);
+  db.participantVersionExistsInIntegration = jest.fn();
+  db.participantVersionExistsInIntegration.mockResolvedValue(false);
 
   test("returns 400 when contract schema is invalid", async () => {
     const malformedBody = {
@@ -43,23 +43,23 @@ describe("POST /api/contracts", () => {
     expect(res.body).toEqual({ error: "Contract schema is invalid" });
   });
 
-  /*test('returns 409 when consumer version already exists', async () => {
-    db.participantVersionExists.mockResolvedValueOnce(true);
+  test("returns 409 when consumer version already exists", async () => {
+    db.participantVersionExistsInIntegration.mockResolvedValueOnce(true);
 
-    const res = await request(server)
-      .post('/api/contracts')
-      .send(REQ_BODY);
+    const res = await request(server).post("/api/contracts").send(REQ_BODY);
 
     expect(res.status).toEqual(409);
-    expect(res.body).toEqual({error: 'Participant version already exists'});
-  });*/
+    expect(res.body).toEqual({
+      error: "Contract for participant version in integration already exists",
+    });
+  });
 
   test("calls databaseClient methods correctly, and returns 201", async () => {
     db.getParticipant = jest.fn();
     db.getParticipant.mockResolvedValue(participant);
 
-    db.participantVersionExists = jest.fn();
-    db.participantVersionExists.mockResolvedValue(false);
+    db.participantVersionExistsInIntegration = jest.fn();
+    db.participantVersionExistsInIntegration.mockResolvedValue(false);
 
     db.publishConsumerContract = jest.fn();
     db.publishConsumerContract.mockResolvedValue(contractRecord);
@@ -70,7 +70,11 @@ describe("POST /api/contracts", () => {
 
     expect(res.status).toEqual(201);
     expect(db.getParticipant.mock.calls[0]).toEqual(["service_1"]);
-    //expect(db.participantVersionExists.mock.calls[0]).toEqual([1, "version1"]);
+    expect(db.participantVersionExistsInIntegration.mock.calls[0]).toEqual([
+      1,
+      "version1",
+      "user_service",
+    ]);
     expect(db.publishConsumerContract.mock.calls[0]).toEqual([
       contract,
       1,
