@@ -4,6 +4,7 @@ import webhook from "../../services/webhookService.js";
 import comp from "../../services/comparisonService.js";
 import { validateSchema } from "../../services/contractSchema.js";
 import YAML from "yaml";
+import "express-async-errors";
 const router = express.Router();
 
 /**

@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
+import "express-async-errors";
 
 const router = express.Router();
 

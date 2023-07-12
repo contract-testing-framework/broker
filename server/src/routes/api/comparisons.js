@@ -2,6 +2,7 @@ import express from "express";
 
 import Comparison from "../../models/Comparison.js";
 import { newGraphMiddleware } from "../../utils/queryHelpers.js";
+import "express-async-errors";
 const router = express.Router();
 
 const ALLOWED_GRAPH = [
