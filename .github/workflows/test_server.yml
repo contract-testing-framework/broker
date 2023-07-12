@@ -50,18 +50,6 @@ jobs:
       - run: npm ci
         working-directory: server
 
-      - name: migrate db
-        run: NODE_ENV=test npx knex migrate:latest && NODE_ENV=test npx knex seed:run
-        working-directory: server/src/db
-        env:
-          TEST_DB_USER: postgres
-          TEST_DB_PASSWORD: postgres
-          TEST_DB_HOST: localhost
-          TEST_DB_PORT: 5432
-          PGPASSWORD: postgres
-          PGUSER: postgres
-          PGHOST: localhost
-
       - run: npm test
         working-directory: server
         env:
