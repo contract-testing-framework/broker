@@ -12,7 +12,7 @@ const app = express();
 
 export const srcDir = dirname(fileURLToPath(import.meta.url));
 
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 
 app.use(express.static(srcDir + "/../dist"));
 

@@ -9,7 +9,13 @@ import IntegrationsNavBar from "./IntegrationsNavBar.jsx";
 import PropTypes from "prop-types";
 import Integration from "../models/Integration.js";
 
-const MyAppShell = ({ children, integrations }) => {
+const MyAppShell = ({
+  children,
+  integrations,
+  integrationsFilter,
+  setIntegrationsFilter,
+  filteredIntegrations,
+}) => {
   const [navbarOpened, setNavbarOpened] = useState(false);
 
   const theme = useMantineTheme();
@@ -33,6 +39,9 @@ const MyAppShell = ({ children, integrations }) => {
         <IntegrationsNavBar
           integrations={integrations}
           hidden={!navbarOpened}
+          integrationsFilter={integrationsFilter}
+          setIntegrationsFilter={setIntegrationsFilter}
+          filteredIntegrations={filteredIntegrations}
         />
       }
       header={
@@ -53,6 +62,10 @@ const MyAppShell = ({ children, integrations }) => {
 MyAppShell.propTypes = {
   children: PropTypes.node.isRequired,
   integrations: PropTypes.arrayOf(PropTypes.instanceOf(Integration)).isRequired,
+  filteredIntegrations: PropTypes.arrayOf(PropTypes.instanceOf(Integration))
+    .isRequired,
+  integrationsFilter: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setIntegrationsFilter: PropTypes.func.isRequired,
 };
 
 export default MyAppShell;
