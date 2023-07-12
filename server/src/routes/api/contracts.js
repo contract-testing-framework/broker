@@ -42,13 +42,17 @@ router.post("/", async (req, res) => {
 
   const consumer = await db.getParticipant(consumerName);
 
-  /*if (
-    await db.participantVersionExists(consumer.participantId, consumerVersion)
+  if (
+    await db.participantVersionExistsInIntegration(
+      consumer.participantId,
+      consumerVersion,
+      contract.provider.name
+    )
   ) {
-    return res
-      .status(409)
-      .json({ error: "Participant version already exists" });
-  }*/
+    return res.status(409).json({
+      error: "Contract for participant version in integration already exists",
+    });
+  }
 
   const contractRecord = await db.publishConsumerContract(
     contract,

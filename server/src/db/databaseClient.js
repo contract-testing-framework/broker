@@ -21,11 +21,27 @@ class DatabaseClient {
     return await findOrCreate(Participant, { participantName });
   }
 
-  async participantVersionExists(participantId, participantVersion) {
-    return !!(await ParticipantVersion.query().findOne({
-      participantId,
-      participantVersion,
-    }));
+  async participantVersionExistsInIntegration(
+    participantId,
+    participantVersion,
+    providerName
+  ) {
+    const provider = await Participant.query().findOne({
+      participantName: providerName,
+    });
+
+    if (!provider) return false;
+
+    return !!(
+      (await ParticipantVersion.query().findOne({
+        participantId,
+        participantVersion,
+      })) &&
+      (await Integration.query().findOne({
+        consumerId: participantId,
+        providerId: provider.participantId,
+      }))
+    );
   }
 
   async publishConsumerContract(
