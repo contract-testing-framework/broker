@@ -18,7 +18,11 @@ const Interactions = ({ comparison }) => {
     ({ description, request, response, providerStates }) => ({
       description:
         description +
-        (providerStates[0]?.name ? " given " + providerStates[0].name : ""),
+        (providerStates
+          ? providerStates[0]?.name
+            ? " given " + providerStates[0].name
+            : ""
+          : ""),
       request,
       response,
       tests: [],
