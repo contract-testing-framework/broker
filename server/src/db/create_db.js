@@ -1,8 +1,8 @@
 import Knex from "knex";
 import "dotenv/config";
-import dbConfigs, { pwd } from "./knexfile.js";
+import dbConfigs from "./knexfile.js";
 
-console.log("Running database setup script...");
+console.log("> Running database setup script...");
 
 const config = dbConfigs[process.env.NODE_ENV];
 
@@ -43,8 +43,9 @@ async function createDatabase() {
     //   }.\n`
     // );
     await creationConnection.raw(`CREATE DATABASE ${database}`);
+    console.log(`  - Database '${database}' created successfully.`);
   } catch (error) {
-    console.error(`Error creating database: ${error.message}`);
+    console.error(`  - Error creating database: ${error.message}`);
   } finally {
     await creationConnection.destroy();
   }
@@ -62,7 +63,7 @@ async function runMigrations() {
     //   console.log("No unapplied migrations found.");
     // }
     await migrationConnection.migrate.latest();
-    console.log("Migrations ran successfully.\n");
+    console.log("  - Migrations ran successfully.\n");
   } catch (error) {
     console.error(`Error running migrations: ${error.message}\n`);
   } finally {
