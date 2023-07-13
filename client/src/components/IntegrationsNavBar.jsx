@@ -33,6 +33,7 @@ const IntegrationsNavBar = ({
           data={participantNames.map((name) => {
             return { value: name, label: name };
           })}
+          searchable
           value={integrationsFilter}
           maxSelectedValues={2}
           onChange={(value) => {
