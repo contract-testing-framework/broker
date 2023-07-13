@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { integrationService } from "../services/apiService.js";
-import { Tabs, Title, Text } from "@mantine/core";
+import { Tabs, Title, Text, Card } from "@mantine/core";
 import IntegrationOverviewTab from "./IntegrationOverviewTab.jsx";
 import Matrix from "./Matrix.jsx";
 import Contracts from "./Contracts.jsx";
@@ -89,10 +89,19 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
         ) : null}
 
         <Tabs.Panel value="graph">
-          <NetworkGraph
-            integrations={dsu.filter(integration.consumer.id)}
-            setIntegrationsFilter={setIntegrationsFilter}
-          />
+          <Card
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            mt="lg"
+            withBorder
+            style={{ textAlign: "left" }}
+          >
+            <NetworkGraph
+              integrations={dsu.filter(integration.consumer.id)}
+              setIntegrationsFilter={setIntegrationsFilter}
+            />
+          </Card>
         </Tabs.Panel>
       </Tabs>
     </>
