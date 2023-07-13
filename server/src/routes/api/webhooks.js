@@ -21,8 +21,14 @@ Request Body:
 }
 */
 router.post("/", async (req, res) => {
+  if (!req.body.integrationId) {
+    return res.status(400).send({ error: "Invalid request body" });
+  }
+
   if (!(await db.integrationExists(req.body.integrationId))) {
-    return res.status(400).send({error: "There is no integration with that integrationId"});
+    return res
+      .status(400)
+      .send({ error: "There is no integration with that integrationId" });
   }
 
   const subscriptionRecord = await db.createWebhookSubscription(req.body);
