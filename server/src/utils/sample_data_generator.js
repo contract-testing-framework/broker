@@ -30,14 +30,12 @@ const template = fs.readFileSync(
   srcDir + "/../data/sample/sieveService-sieveProvider.json"
 );
 
-const participantName = () =>
+const randomParticipantName = () =>
   faker.science.chemicalElement().name.toLowerCase() + "Service";
 
-const generateContract = () => {
-  const consumerName = participantName();
-  // const providerName = participantName();
-  const providerName = "magnesiumService";
-  // console.table({ srcDir, consumerName, providerName });
+const generateContract = (consumerName, providerName) => {
+  consumerName = consumerName || randomParticipantName();
+  providerName = providerName || randomParticipantName();
 
   const contract = JSON.parse(template);
   contract.consumer.name = consumerName;
@@ -72,6 +70,8 @@ const publishContracts = (contract) => {
   );
 };
 
-for (let i = 0; i < 10; i++) {
-  publishContracts(generateContract());
-}
+// for (let i = 0; i < 4; i++) {
+publishContracts(generateContract("platinumService"));
+publishContracts(generateContract(undefined, "platinumService"));
+publishContracts(generateContract("radiumService"));
+// }

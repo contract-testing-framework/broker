@@ -59,7 +59,10 @@ const App = () => {
                 radius="md"
                 fit="contain"
               /> */}
-              <NetworkGraph integrations={filteredIntegrations} />
+              <NetworkGraph
+                integrations={filteredIntegrations}
+                setIntegrationsFilter={setIntegrationsFilter}
+              />
             </Card>
           }
         />
