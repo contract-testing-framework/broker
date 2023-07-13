@@ -1,0 +1,25 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - name: "Warm up"
+      duration: 20
+      arrivalRate: 5
+      rampTo: 10
+    - name: "Ramp up to peak load"
+      duration: 20
+      arrivalRate: 10
+      rampTo: 50
+    - name: "Sustained peak load"
+      duration: 60
+      rampTo: 50
+  plugins:
+    apdex: {}
+scenarios:
+  - name: Get 3 pages
+    flow:
+      - get:
+          url: "/"
+      - get:
+          url: "/api/integrations"
+      - get:
+          url: "/api/integrations/1"
