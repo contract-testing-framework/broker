@@ -5,14 +5,24 @@ import PropTypes from "prop-types";
 import Integration from "../models/Integration";
 
 const IntegrationNavLinks = ({ integrations }) => {
-  const [active, setActive] = useState(-1);
   const path = useLocation().pathname;
+
+  const [active, setActive] = useState(-1);
 
   useEffect(() => {
     if (!path.match(/.*integrations.*/i)) {
       setActive(-1);
+    } else {
+      const integrationIdMatch = path.match(/\/integrations\/(\d+)/);
+      if (integrationIdMatch) {
+        setActive(
+          integrations.findIndex(
+            (integration) => integration.id === Number(integrationIdMatch[1])
+          )
+        );
+      }
     }
-  }, [path]);
+  }, [path, integrations]);
 
   return integrations.map((integration, index) => {
     const nameString = `${integration.consumer.name} ⇄ ${integration.provider.name}`;
