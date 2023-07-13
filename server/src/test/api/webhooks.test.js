@@ -21,4 +21,15 @@ describe('POST /api/webhooks', () => {
     expect(res.status).toEqual(400);
     expect(res.body).toEqual({error: 'There is no integration with that integrationId'});
   });
+
+  test('returns 400 when the request body is invalid', async () => {
+    const res = await request(server)
+      .post('/api/webhooks')
+      .send({}); 
+
+    expect(res.status).toEqual(400);
+    expect(res.body).toEqual({ error: 'Invalid request body' });
+  });
 });
+
+

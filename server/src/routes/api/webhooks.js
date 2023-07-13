@@ -22,6 +22,10 @@ Request Body:
 }
 */
 router.post("/", async (req, res) => {
+  if (!req.body.integrationId) {
+    return res.status(400).send({ error: "Invalid request body" });
+  }
+
   if (!(await db.integrationExists(req.body.integrationId))) {
     return res
       .status(400)
