@@ -27,10 +27,15 @@ export function randomColorRGB(opacity = 1) {
   return `rgba(${red},${green},${blue},${opacity})`;
 }
 
-export function randomColorHSL(maxS = 100, maxL = 100, opacity = 1) {
-  const hue = Math.floor(Math.random() * 360);
-  const saturation = Math.floor(Math.random() * maxS);
-  const lightness = Math.floor(Math.random() * maxL);
+function seededRandom(seed) {
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+export function randomColorHSL(maxS = 100, maxL = 100, opacity = 1, seed) {
+  const hue = Math.floor(seededRandom(seed) * 360);
+  const saturation = Math.floor(seededRandom(seed) * maxS);
+  const lightness = Math.floor(seededRandom(seed) * maxL);
   const alpha = opacity;
 
   return `hsla(${hue},${saturation}%,${lightness}%,${alpha})`;
