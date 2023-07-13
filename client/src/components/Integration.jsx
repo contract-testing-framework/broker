@@ -22,6 +22,8 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
       setIntegration(data);
     };
     fetchAndSet();
+
+    setActiveTab("timeline");
   }, [integrationId]);
 
   const handleViewContracts = (comparison) => {
