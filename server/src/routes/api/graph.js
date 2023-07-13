@@ -6,6 +6,7 @@ import Participant from "../../models/Participant.js";
 import ParticipantVersion from "../../models/ParticipantVersion.js";
 import Integration from "../../models/Integration.js";
 import Comparison from "../../models/Comparison.js";
+import "express-async-errors";
 
 import { fmtJG } from "../../utils/queryHelpers.js";
 
@@ -13,11 +14,16 @@ const router = express.Router();
 
 const models = {};
 
-[Comparison, ConsumerContract, ProviderSpec, Participant, ParticipantVersion, Integration].forEach(
-  (model) => {
-    models[model.tableName] = model;
-  }
-);
+[
+  Comparison,
+  ConsumerContract,
+  ProviderSpec,
+  Participant,
+  ParticipantVersion,
+  Integration,
+].forEach((model) => {
+  models[model.tableName] = model;
+});
 
 router.use("/:modelPath", async (req, res) => {
   const { modelPath } = req.params;

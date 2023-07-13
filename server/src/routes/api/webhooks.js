@@ -1,6 +1,7 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
 const router = express.Router();
+import "express-async-errors";
 
 /*
 Creates a new webhook subscription. 
@@ -22,7 +23,9 @@ Request Body:
 */
 router.post("/", async (req, res) => {
   if (!(await db.integrationExists(req.body.integrationId))) {
-    return res.status(400).send({error: "There is no integration with that integrationId"});
+    return res
+      .status(400)
+      .send({ error: "There is no integration with that integrationId" });
   }
 
   const subscriptionRecord = await db.createWebhookSubscription(req.body);

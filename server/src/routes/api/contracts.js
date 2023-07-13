@@ -3,6 +3,7 @@ import db from "../../db/databaseClient.js";
 import comp from "../../services/comparisonService.js";
 // import { newGraphMiddleware } from "../../utils/queryHelpers.js";
 import { validateSchema } from "../../services/contractSchema.js";
+import "express-async-errors";
 const router = express.Router();
 
 // const ALLOWED_GRAPH = [
@@ -41,14 +42,17 @@ router.post("/", async (req, res) => {
 
   const consumer = await db.getParticipant(consumerName);
 
-  /*if (
-    await db.participantVersionExists(consumer.participantId, consumerVersion)
+  if (
+    await db.participantVersionExistsInIntegration(
+      consumer.participantId,
+      consumerVersion,
+      contract.provider.name
+    )
   ) {
-    return res
-      .status(409)
-      .json({ error: "Participant version already exists" });
-  }*/
-
+    return res.status(409).json({
+      error: "Contract for participant version in integration already exists",
+    });
+  }
 
   const contractRecord = await db.publishConsumerContract(
     contract,
@@ -56,9 +60,9 @@ router.post("/", async (req, res) => {
     consumerVersion,
     consumerBranch
   );
-  
+
   comp.compareWithProviderSpecs(contractRecord.consumerContractId);
-  
+
   res.status(201).json(contractRecord);
 });
 
