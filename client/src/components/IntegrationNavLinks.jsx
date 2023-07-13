@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Integration from "../models/Integration";
 
 const IntegrationNavLinks = ({ integrations }) => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(-1);
   const path = useLocation().pathname;
 
   useEffect(() => {

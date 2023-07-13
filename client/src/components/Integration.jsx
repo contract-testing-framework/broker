@@ -6,8 +6,11 @@ import IntegrationOverviewTab from "./IntegrationOverviewTab.jsx";
 import Matrix from "./Matrix.jsx";
 import Contracts from "./Contracts.jsx";
 import IntegrationTimeline from "./IntegrationTimeline.jsx";
+import PropTypes from "prop-types";
+import DSU from "../utils/dsu.js";
+import NetworkGraph from "./NetworkGraph.jsx";
 
-const Integration = () => {
+const Integration = ({ dsu, setIntegrationsFilter }) => {
   const { integrationId } = useParams();
   const [integration, setIntegration] = useState(null);
   const [activeTab, setActiveTab] = useState("timeline");
@@ -43,6 +46,7 @@ const Integration = () => {
           <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
           <Tabs.Tab value="comparisons">Comparisons</Tabs.Tab>
           <Tabs.Tab value="matrix">Matrix</Tabs.Tab>
+          <Tabs.Tab value="graph">Graph</Tabs.Tab>
           {/* <Tabs.Tab value="webhooks">Webhooks</Tabs.Tab> */}
           <Tabs.Tab
             value="contracts"
@@ -81,9 +85,21 @@ const Integration = () => {
             {comparison ? <Contracts comparison={comparison} /> : null}
           </Tabs.Panel>
         ) : null}
+
+        <Tabs.Panel value="graph">
+          <NetworkGraph
+            integrations={dsu.filter(integration.consumer.id)}
+            setIntegrationsFilter={setIntegrationsFilter}
+          />
+        </Tabs.Panel>
       </Tabs>
     </>
   ) : null;
+};
+
+Integration.propTypes = {
+  dsu: PropTypes.instanceOf(DSU),
+  setIntegrationsFilter: PropTypes.func.isRequired,
 };
 
 export { Integration };
