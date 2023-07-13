@@ -1,18 +1,24 @@
 import express from "express";
 import "dotenv/config";
-import morgan from "morgan";
+// import morgan from "morgan";
 import "./db/db.js";
 
 import indexRouter from "./routes/index.js";
 import apiRouter from "./routes/api/api.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import loggers from "./utils/loggers.js";
 
 const app = express();
 
 export const srcDir = dirname(fileURLToPath(import.meta.url));
 
-app.use(morgan("tiny"));
+// Loggers
+// app.use(morgan("dev"));
+// app.use(loggers.console.req());
+app.use(loggers.console.res());
+// app.use(loggers.file.req());
+app.use(loggers.file.res());
 
 app.use(express.static(srcDir + "/../dist"));
 

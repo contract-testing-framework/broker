@@ -6,6 +6,7 @@ import AppShell from "./components/AppShell.jsx";
 import { Integration } from "./components/Integration.jsx";
 import SettingsMenu from "./components/SettingsMenu.jsx";
 import { Card, Title, Image } from "@mantine/core";
+import NetworkGraph from "./components/NetworkGraph.jsx";
 
 const fetchAndSet = async (service, setter) => {
   const data = await service.getAll();
@@ -19,22 +20,48 @@ const App = () => {
     fetchAndSet(integrationService, setIntegrations);
   }, []);
 
+  const [integrationsFilter, setIntegrationsFilter] = useState([]);
+  const [filteredIntegrations, setFilteredIntegrations] = useState([]);
+
+  useEffect(() => {
+    const filterIntegrations = (names) =>
+      integrationsFilter
+        ? integrations.filter((integration) =>
+            names?.every(
+              (name) =>
+                integration.consumer.name === name ||
+                integration.provider.name === name
+            )
+          )
+        : integrations;
+    setFilteredIntegrations(filterIntegrations(integrationsFilter));
+  }, [integrationsFilter, integrations]);
+
   const path = useLocation().pathname;
 
   return (
-    <AppShell integrations={integrations}>
+    <AppShell
+      integrations={integrations}
+      integrationsFilter={integrationsFilter}
+      setIntegrationsFilter={setIntegrationsFilter}
+      filteredIntegrations={filteredIntegrations}
+    >
       <Routes>
         <Route
           path="/"
           element={
             <Card>
               {/* <Title order={1}>Signet Contract Broker</Title> */}
-              <Image
+              {/* <Image
                 src="/transparent-logo-horizontal-mn.svg"
                 maw={1000}
                 mx="auto"
                 radius="md"
                 fit="contain"
+              /> */}
+              <NetworkGraph
+                integrations={filteredIntegrations}
+                setIntegrationsFilter={setIntegrationsFilter}
               />
             </Card>
           }

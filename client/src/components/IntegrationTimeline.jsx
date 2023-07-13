@@ -14,18 +14,7 @@ import Contract from "../models/Contract.js";
 import ParticipantVersion from "../models/ParticipantVersion.js";
 import PropTypes from "prop-types";
 import Integration from "../models/Integration";
-
-const uniqueBy = (arr, prop) => {
-  return Object.values(
-    arr.reduce((acc, item) => {
-      acc[item[prop]] = item;
-      return acc;
-    }, {})
-  );
-};
-
-const uniqueByHash = (arr) => uniqueBy(arr, "hash");
-const uniqueById = (arr) => uniqueBy(arr, "id");
+import { uniqueByHash, uniqueById } from "../utils/helpers.js";
 
 const IntegrationTimeline = ({ integration }) => {
   // console.log("integration:");
@@ -128,7 +117,7 @@ const IntegrationTimeline = ({ integration }) => {
         <Timeline.Item
           bullet={props.icon}
           title={props.title}
-          key={item.hash}
+          key={`${item.participantName}-${item.createdAt}`}
           bulletSize={36}
           color={props.color}
           lineVariant={props.lineVariant || "solid"}

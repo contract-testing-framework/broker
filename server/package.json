@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "NODE_ENV=development nodemon --ignore ./src/data/temp src/app.js",
+    "dev": "NODE_ENV=development nodemon --ignore ./src/data/ src/app.js",
     "nomon": "node src/app.js",
     "resetdb": "NODE_ENV=development node -r dotenv/config src/db/drop_db.js && NODE_ENV=development node -r dotenv/config src/db/create_db.js",
     "resetdev": "npm run resetdb && npm run dev",
@@ -19,8 +19,10 @@
     "docker:initbuilder": "docker buildx create --name mybuilder --driver docker-container --bootstrap --use",
     "docker:buildpushserver": "docker context use default && docker builder use mybuilder && docker buildx build --platform linux/amd64,linux/arm64 -t signetframework/signet-broker:latest --push .",
     "docker:buildpushdb": "docker context use default && docker builder use mybuilder && cd src/db && docker buildx build --platform linux/amd64,linux/arm64 -t signetframework/signet-db:latest --push .",
-    "ecs:up": "docker context use myecscontext && docker compose up",
-    "ecs:down": "docker context use myecscontext && docker compose down"
+    "ecs:createcontext": "docker context create ecs signetecscontext",
+    "ecs:up": "docker context use signetecscontext && docker compose up",
+    "ecs:down": "docker context use signetecscontext && docker compose down",
+    "deploy": "npm run ecs:createcontext && npm run ecs:up"
   },
   "keywords": [],
   "author": "",
@@ -35,11 +37,13 @@
     "object-hash": "^3.0.0",
     "objection": "^3.0.1",
     "pg": "^8.11.0",
+    "rotating-file-stream": "^3.1.0",
     "swagger-mock-validator": "^10.1.4",
     "yaml": "^2.3.1"
   },
   "type": "module",
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "eslint": "^8.43.0",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22",

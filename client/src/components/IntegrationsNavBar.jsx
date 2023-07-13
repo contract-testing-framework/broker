@@ -8,21 +8,13 @@ import Integration from "../models/Integration.js";
 import IntegrationNavLinks from "./IntegrationNavLinks.jsx";
 import { unique } from "../utils/helpers.js";
 
-const IntegrationsNavBar = ({ integrations }) => {
-  const [integrationsFilter, setIntegrationsFilter] = useState([]);
-
-  const navigate = useNavigate();
-
-  const filteredIntegrations = (filters) =>
-    integrationsFilter
-      ? integrations.filter((integration) =>
-          filters?.every(
-            (name) =>
-              integration.consumer.name === name ||
-              integration.provider.name === name
-          )
-        )
-      : integrations;
+const IntegrationsNavBar = ({
+  integrations,
+  integrationsFilter,
+  setIntegrationsFilter,
+  filteredIntegrations,
+}) => {
+  // const navigate = useNavigate();
 
   const participantNames = unique(
     integrations
@@ -45,11 +37,11 @@ const IntegrationsNavBar = ({ integrations }) => {
           maxSelectedValues={2}
           onChange={(value) => {
             setIntegrationsFilter(value);
-            if (filteredIntegrations(value).length === 0) {
-              navigate("/");
-            } else {
-              navigate(`/integrations/${filteredIntegrations(value)[0].id}`);
-            }
+            // if (filteredIntegrations(value).length === 0) {
+            //   navigate("/");
+            // } else {
+            //   navigate(`/integrations/${filteredIntegrations(value)[0].id}`);
+            // }
           }}
           clearable
           placeholder="Select participants"
@@ -58,15 +50,17 @@ const IntegrationsNavBar = ({ integrations }) => {
 
       <Text style={{ opacity: "50%" }}>Integrations</Text>
 
-      <IntegrationNavLinks
-        integrations={filteredIntegrations(integrationsFilter)}
-      />
+      <IntegrationNavLinks integrations={filteredIntegrations} />
     </Navbar>
   );
 };
 
 IntegrationsNavBar.propTypes = {
   integrations: PropTypes.arrayOf(PropTypes.instanceOf(Integration)).isRequired,
+  filteredIntegrations: PropTypes.arrayOf(PropTypes.instanceOf(Integration))
+    .isRequired,
+  integrationsFilter: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setIntegrationsFilter: PropTypes.func.isRequired,
 };
 
 export default IntegrationsNavBar;
