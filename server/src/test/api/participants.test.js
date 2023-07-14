@@ -69,4 +69,31 @@ describe('Test PATCH /api/participants', () => {
     });
     expect(VersionEnvironmentRecord).toBeDefined();
   });
+
+  test('returns 200, and deletes versions_environments record', async () => {
+    await Participant.query().insert({
+      participantName: "user_service",
+      participantId: 6,
+    });
+    await ParticipantVersion.query().insert({
+      participantId: 6,
+      participantVersion: "version1",
+      participantVersionId: 6,
+    })
+
+    await request(server)
+      .patch('/api/participants')
+      .send(REQ_BODY);
+
+    const res = await request(server)
+      .patch('/api/participants')
+      .send({ ...REQ_BODY, deployed: false });
+
+    expect(res.status).toEqual(200);
+
+    const VersionEnvironmentRecord = await VersionEnvironment.query().findOne({
+      participantVersionId: 6
+    });
+    expect(VersionEnvironmentRecord).not.toBeDefined();
+  });
 });
