@@ -3,3 +3,4 @@
 .vite
 .vscode
 .DS_Store
+server/src/log/*

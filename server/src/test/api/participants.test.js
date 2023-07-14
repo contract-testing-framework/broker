@@ -1,6 +1,8 @@
 import request from 'supertest';
 import server from '../../app.js';
-import db from "../../db/databaseClient.js";
+import Participant from '../../models/Participant.js';
+import ParticipantVersion from '../../models/ParticipantVersion.js';
+import VersionEnvironment from '../../models/VersionEnvironment.js';
 
 const REQ_BODY = {
   "participantName": "user_service",
@@ -46,6 +48,52 @@ describe('Test PATCH /api/participants', () => {
   });
 
   test('returns 200, and creates versions_environments record', async () => {
-    
+    await Participant.query().insert({
+      participantName: "user_service",
+      participantId: 6,
+    });
+    await ParticipantVersion.query().insert({
+      participantId: 6,
+      participantVersion: "version1",
+      participantVersionId: 6,
+    })
+
+    const res = await request(server)
+      .patch('/api/participants')
+      .send(REQ_BODY);
+
+    expect(res.status).toEqual(200);
+
+    const VersionEnvironmentRecord = await VersionEnvironment.query().findOne({
+      participantVersionId: 6
+    });
+    expect(VersionEnvironmentRecord).toBeDefined();
+  });
+
+  test('returns 200, and deletes versions_environments record', async () => {
+    await Participant.query().insert({
+      participantName: "user_service",
+      participantId: 6,
+    });
+    await ParticipantVersion.query().insert({
+      participantId: 6,
+      participantVersion: "version1",
+      participantVersionId: 6,
+    })
+
+    await request(server)
+      .patch('/api/participants')
+      .send(REQ_BODY);
+
+    const res = await request(server)
+      .patch('/api/participants')
+      .send({ ...REQ_BODY, deployed: false });
+
+    expect(res.status).toEqual(200);
+
+    const VersionEnvironmentRecord = await VersionEnvironment.query().findOne({
+      participantVersionId: 6
+    });
+    expect(VersionEnvironmentRecord).not.toBeDefined();
   });
 });

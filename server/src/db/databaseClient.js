@@ -315,8 +315,13 @@ class DatabaseClient {
     )[0];
   }
 
-  async removeParticipantFromEnvironment(participantVersionId) {
-    return await VersionEnvironment.query().deleteById(participantVersionId);
+  async removeParticipantFromEnvironment(participantVersionId, environmentId) {
+    return await VersionEnvironment.query()
+      .delete()
+      .where({
+        participantVersionId,
+        environmentId,
+      });
   }
 
   // Given participantId

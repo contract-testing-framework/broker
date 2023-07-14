@@ -48,7 +48,8 @@ router.patch("/", async (req, res) => {
     );
   } else {
     await db.removeParticipantFromEnvironment(
-      participantVersionRecord.participantVersionId
+      participantVersionRecord.participantVersionId,
+      environmentRecord.environmentId
     );
   }
 
