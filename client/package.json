@@ -29,6 +29,7 @@
     "react-graph-vis": "^1.0.7",
     "react-router-dom": "^6.14.0",
     "react-time-ago": "^7.2.1",
+    "seedrandom": "^3.0.5",
     "swagger-ui-react": "^5.1.0",
     "tabler-icons-react": "^1.56.0"
   },

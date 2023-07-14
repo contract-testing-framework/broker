@@ -27,7 +27,7 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
         return {
           id: participant.id,
           label: participant.name,
-          color: randomColor(100, 60, 1),
+          color: randomColor(100, 60, 1, participant.id),
         };
       })
     );
@@ -132,22 +132,28 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
     //   console.log(edges);
     // },
     // doubleClick: ({ items, edges, canvas }) => {
-    doubleClick: ({ edges, nodes }) => {
+    doubleClick: ({ edges: edgeIds, nodes: nodeIds }) => {
       // console.log(event);
       // console.table({
       //   nodes: event.nodes,
       //   edges: event.edges,
       //   items: event.items,
       // });
-      console.log(`nodes.length = ${nodes.length}`);
-      console.log(`edges.length = ${edges.length}`);
-      if (edges.length === 1 && (nodes.length === 2 || nodes.length === 0)) {
-        console.log(`I should navigate to /integrations/${edges[0]}`);
-        navigate(`/integrations/${edges[0]}`);
-      } else if (nodes.length === 1) {
+      //console.log(`nodes.length = ${nodeIds.length}`);
+      //console.log(`edges.length = ${edgeIds.length}`);
+      if (
+        edgeIds.length === 1 &&
+        (nodeIds.length === 2 || nodeIds.length === 0)
+      ) {
+        //console.log(`I should navigate to /integrations/${edgeIds[0]}`);
+        navigate(`/integrations/${edgeIds[0]}`);
+      } else if (nodeIds.length === 1) {
         // console.log(`nodes[0] = ${nodes[0]}`);
-        setIntegrationsFilter(edges.find((edge) => edge.id == nodes[0]));
-      } else if (nodes.length === 0 && edges.length === 0) {
+        //console.log(edgeIds, nodeIds);
+        setIntegrationsFilter([
+          nodes.find((node) => node.id == nodeIds[0]).label,
+        ]);
+      } else if (nodeIds.length === 0 && edgeIds.length === 0) {
         setIntegrationsFilter([]);
       }
     },

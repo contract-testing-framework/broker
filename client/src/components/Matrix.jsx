@@ -114,7 +114,7 @@ const Matrix = ({ comparisons }) => {
   });
 
   return (
-    <Box style={{ textAlign: "left" }}>
+    <Box mt="lg" style={{ textAlign: "left" }}>
       <MantineReactTable table={table} />
     </Box>
   );

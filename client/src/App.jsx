@@ -7,6 +7,7 @@ import { Integration } from "./components/Integration.jsx";
 import SettingsMenu from "./components/SettingsMenu.jsx";
 import { Card, Title, Image } from "@mantine/core";
 import NetworkGraph from "./components/NetworkGraph.jsx";
+import DSU from "./utils/dsu";
 
 const fetchAndSet = async (service, setter) => {
   const data = await service.getAll();
@@ -15,6 +16,8 @@ const fetchAndSet = async (service, setter) => {
 
 const App = () => {
   const [integrations, setIntegrations] = useState([]);
+
+  const [dsu, setDsu] = useState(null);
 
   useEffect(() => {
     fetchAndSet(integrationService, setIntegrations);
@@ -35,6 +38,7 @@ const App = () => {
           )
         : integrations;
     setFilteredIntegrations(filterIntegrations(integrationsFilter));
+    setDsu(new DSU(integrations));
   }, [integrationsFilter, integrations]);
 
   const path = useLocation().pathname;
@@ -70,7 +74,10 @@ const App = () => {
           path="integrations/:integrationId"
           element={
             path.match(/.*integrations.*/i) && integrations.length > 0 ? (
-              <Integration />
+              <Integration
+                dsu={dsu}
+                setIntegrationsFilter={setIntegrationsFilter}
+              />
             ) : null
           }
         />
