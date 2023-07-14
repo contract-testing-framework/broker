@@ -13,7 +13,7 @@ import NetworkGraph from "./NetworkGraph.jsx";
 const Integration = ({ dsu, setIntegrationsFilter }) => {
   const { integrationId } = useParams();
   const [integration, setIntegration] = useState(null);
-  const [activeTab, setActiveTab] = useState("timeline");
+  const [activeTab, setActiveTab] = useState("comparisons");
   const [comparison, setComparison] = useState(null);
 
   useEffect(() => {
@@ -22,8 +22,6 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
       setIntegration(data);
     };
     fetchAndSet();
-
-    setActiveTab("timeline");
   }, [integrationId]);
 
   const handleViewContracts = (comparison) => {
@@ -45,11 +43,10 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
 
       <Tabs value={activeTab} onTabChange={setActiveTab}>
         <Tabs.List>
-          <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
           <Tabs.Tab value="comparisons">Comparisons</Tabs.Tab>
           <Tabs.Tab value="matrix">Matrix</Tabs.Tab>
+          <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
           <Tabs.Tab value="graph">Graph</Tabs.Tab>
-          {/* <Tabs.Tab value="webhooks">Webhooks</Tabs.Tab> */}
           <Tabs.Tab
             value="contracts"
             style={activeTab === "contracts" ? {} : { display: "none" }}
@@ -79,9 +76,6 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
           <Matrix comparisons={integration.comparisons} />
         </Tabs.Panel>
 
-        {/* <Tabs.Panel value="webhooks">
-          <Title order={2} mt={"md"} mb={"md"}>Webhooks</Title>
-        </Tabs.Panel> */}
         {activeTab === "contracts" ? (
           <Tabs.Panel value="contracts">
             {comparison ? <Contracts comparison={comparison} /> : null}

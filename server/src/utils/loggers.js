@@ -12,9 +12,8 @@ const reqLogString =
 const resLogString =
   '[:date[web]] RES ":method :url HTTP/:http-version" - :req[Ngrok-Auth-User-Email] - :status - :res[content-length] bytes in :response-time[3] ms';
 
-// create a rotating write stream
 const accessLogStream = rfs.createStream("access.log", {
-  interval: "1d", // rotate daily
+  interval: "1d",
   path: path.join(srcDir, "/../log"),
 });
 

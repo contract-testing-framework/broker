@@ -15,7 +15,7 @@
     "pretest": "npm run createdb:test",
     "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "posttest": "npm run dropdb:test",
-    "build:ui": "cd ../client && npm run build && cd ../server && rm -rf ./dist && cp -r ../client/dist ./dist",
+    "build:ui": "cd ../client && npm run build",
     "docker:initbuilder": "docker buildx create --name mybuilder --driver docker-container --bootstrap --use",
     "docker:buildpushserver": "docker context use default && docker builder use mybuilder && docker buildx build --platform linux/amd64,linux/arm64 -t signetframework/signet-broker:latest --push .",
     "docker:buildpushdb": "docker context use default && docker builder use mybuilder && cd src/db && docker buildx build --platform linux/amd64,linux/arm64 -t signetframework/signet-db:latest --push .",
@@ -54,8 +54,6 @@
     "transform": {},
     "setupFilesAfterEnv": [
       "./src/test/setup.js"
-    ],
-    "globalTeardown": "./src/test/globalTeardown.js",
-    "globalSetup": "./src/test/globalSetup.js"
+    ]
   }
 }

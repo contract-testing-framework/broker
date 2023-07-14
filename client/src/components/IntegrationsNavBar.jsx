@@ -36,14 +36,7 @@ const IntegrationsNavBar = ({
           searchable
           value={integrationsFilter}
           maxSelectedValues={2}
-          onChange={(value) => {
-            setIntegrationsFilter(value);
-            // if (filteredIntegrations(value).length === 0) {
-            //   navigate("/");
-            // } else {
-            //   navigate(`/integrations/${filteredIntegrations(value)[0].id}`);
-            // }
-          }}
+          onChange={(value) => setIntegrationsFilter(value)}
           clearable
           placeholder="Select participants"
         />

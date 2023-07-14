@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# https://github.com/eficode/wait-for/blob/master/wait-for
 # The MIT License (MIT)
 #
 # Copyright (c) 2017 Eficode Oy

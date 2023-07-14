@@ -44,7 +44,7 @@ const Matrix = ({ comparisons }) => {
         header: "Consumer",
         columns: [
           {
-            accessorKey: "consumerVersion", //access nested data with dot notation
+            accessorKey: "consumerVersion",
             header: "Consumer Version",
             filterVariant: "multi-select",
             enableClickToCopy: true,
@@ -66,7 +66,7 @@ const Matrix = ({ comparisons }) => {
         header: "Provider",
         columns: [
           {
-            accessorKey: "providerVersion", //normal accessorKey
+            accessorKey: "providerVersion",
             header: "Provider Version",
             filterVariant: "multi-select",
             enableClickToCopy: true,
