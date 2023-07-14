@@ -5,7 +5,8 @@ import { integrationService } from "./services/apiService.js";
 import AppShell from "./components/AppShell.jsx";
 import { Integration } from "./components/Integration.jsx";
 import SettingsMenu from "./components/SettingsMenu.jsx";
-import { Card, Title, Image } from "@mantine/core";
+import DeployGuard from "./components/DeployGuard";
+import { Card, Title } from "@mantine/core";
 import NetworkGraph from "./components/NetworkGraph.jsx";
 import DSU from "./utils/dsu";
 
@@ -85,6 +86,7 @@ const App = () => {
           path="/settings/*"
           element={<SettingsMenu integrations={integrations} />}
         />
+        <Route path="/deploy-guard" element={<DeployGuard />} />
         <Route
           path="*"
           element={

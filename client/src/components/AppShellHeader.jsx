@@ -9,7 +9,7 @@ import {
   Image,
   Group,
 } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { IconSun, IconMoonStars, IconSettings } from "@tabler/icons-react";
 
 const AppShellHeader = ({
@@ -42,6 +42,18 @@ const AppShellHeader = ({
           </Anchor>
         </Link>
         <Flex style={{ marginLeft: "auto" }}>
+          <Button
+            className="deploy-guard-button"
+            variant="outline"
+            color={dark ? "yellow" : "blue"}
+            onClick={() => navigate("/deploy-guard")}
+            style={{
+              marginRight: "2rem",
+              transition: "background-color 0.2s, color 0.2s",
+            }}
+          >
+            Deploy Guard
+          </Button>
           <ActionIcon
             variant="outline"
             color={dark ? "yellow" : "blue"}

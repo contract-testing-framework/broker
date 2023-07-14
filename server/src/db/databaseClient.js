@@ -449,6 +449,11 @@ class DatabaseClient {
     return Participant.query();
   }
 
+  async getDeployGuardData() {
+    const joinGraph = ["versions.environments"];
+    return Participant.query().withGraphJoined(fmtJG(joinGraph));
+  }
+
   async getVersionsContracts() {
     return VersionContract.query();
   }
