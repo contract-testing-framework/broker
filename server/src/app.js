@@ -9,17 +9,18 @@ import apiRouter from "./routes/api/api.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import loggers from "./utils/loggers.js";
-import slowDown from "express-slow-down";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 
-const speedLimiter = slowDown({
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  delayAfter: 100,
-  delayMs: 500,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
-app.use(speedLimiter);
+app.use(limiter);
 
 export const srcDir = dirname(fileURLToPath(import.meta.url));
 
