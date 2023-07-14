@@ -23,6 +23,32 @@ class WebhookService {
     }
   }
 
+  async providerVerifiedEvent(specRecord) {
+    const providerRecord = await db.getParticipantById(specRecord.providerId);
+    const integrationRecords = await db.getIntegrationsByProviderId(
+      providerRecord.participantId
+    );
+    const integrationIds = integrationRecords.map(
+      (record) => record.integrationId
+    );
+
+    const payload = {
+      providerName: providerRecord.participantName,
+      spec: specRecord.spec,
+      providerVersion: specRecord.providerVersion,
+      publishedAt: specRecord.createdAt,
+    };
+
+    const urls = await db.getURLsForEvent(
+      "providerVerificationEvents",
+      integrationIds
+    );
+
+    for (let url of urls) {
+      this.sendWebhook(url, payload);
+    }
+  }
+
   sendWebhook(url, body) {
     const options = {
       method: "POST",
