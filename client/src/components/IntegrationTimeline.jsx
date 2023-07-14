@@ -1,4 +1,4 @@
-import { Anchor, Card, Timeline, Text } from "@mantine/core";
+import { Anchor, Card, Timeline, Text, Code } from "@mantine/core";
 import {
   // IconGitBranch,
   // IconGitPullRequest,
@@ -58,6 +58,24 @@ const IntegrationTimeline = ({ integration }) => {
     version.participantType = "provider";
   });
 
+  const participantVersions = [...consumerVersions, ...providerVersions];
+
+  const deployments = participantVersions
+    .map((version) => {
+      return version.deployments.map((deployment) => {
+        return {
+          ...deployment,
+          participantVersion: version,
+          participantType: version.participantType,
+          createdAt: new Date(deployment.createdAt),
+        };
+      });
+    })
+    .flat();
+
+  console.log("deployments:");
+  console.log(deployments);
+
   // console.log("consumerVersions:");
   // console.log(consumerVersions);
   // console.log("providerVersions:");
@@ -70,10 +88,10 @@ const IntegrationTimeline = ({ integration }) => {
   // console.log(providerSpecs);
 
   let timeLineItems = [
-    ...consumerVersions,
-    ...providerVersions,
+    ...participantVersions,
     ...providerSpecs,
     ...consumerContracts,
+    ...deployments,
   ]
     .sort((a, b) => b.createdAt - a.createdAt)
     .map((item) => {
@@ -82,7 +100,7 @@ const IntegrationTimeline = ({ integration }) => {
       if (item instanceof Spec) {
         props.docType = "Provider Spec";
         props.participantName = integration.provider.name;
-        props.message = `${props.participantName} added a new provider spec: ${item.spec.info.version}`;
+        props.message = `${props.participantName} added new provider spec version ${item.spec.info.version}`;
         props.color = "blue";
         props.icon = <IconCertificate2 size={24} />;
         props.title = `${props.participantName} Spec ${item.spec.info.version}`;
@@ -108,9 +126,27 @@ const IntegrationTimeline = ({ integration }) => {
           props.color = "red";
         }
         props.title = `${props.participantName} app version ${item.version}`;
-        props.message = `${props.participantName} added a new ${props.docType}: ${item.version}`;
+        props.message = `${
+          props.participantName
+        } added new ${props.docType.toLowerCase()} version ${item.version}`;
         props.icon = <IconGitCommit size={24} />;
         props.lineVariant = "dashed";
+      } else {
+        props.docType = "Deployment";
+        props.participantName =
+          item.participantType === "consumer"
+            ? integration.consumer.name
+            : integration.provider.name;
+        props.environmentName = item.environment.environmentName;
+        props.color = "gray";
+        props.title = `${props.participantName} Deployment`;
+        props.message = (
+          <>
+            {`${props.participantName} deployed version ${item.participantVersion.version} to`}
+            <Code>{item.environment.environmentName}</Code>
+          </>
+        );
+        props.icon = <IconGitCommit size={24} />;
       }
 
       return (
