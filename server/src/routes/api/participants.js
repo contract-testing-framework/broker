@@ -1,6 +1,5 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
-// import Participant from "../../models/Participant.js";
 import "express-async-errors";
 
 const router = express.Router();
@@ -58,10 +57,10 @@ router.patch("/", async (req, res) => {
 
 // Everything that is commented out is currently not being used - 7/5
 
-// /**
-//  * Gets all participants
-//  * @returns {array} All participants
-//  */
+/**
+ * Gets all participants
+ * @returns {array} All participants
+ */
 // router.get("/", async (_req, res) => {
 //   const participants = await Participant.query();
 //   res.json(participants);
