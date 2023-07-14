@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
-// import Participant from "../../models/Participant.js";
+import Participant from "../../models/Participant.js";
 
 const router = express.Router();
 
@@ -15,40 +15,52 @@ Request Body:
   deployed: (bool)
 }
 */
-router.patch('/', async (req, res) => {
-  const { participantName, participantVersion, environmentName, deployed } = req.body 
+router.patch("/", async (req, res) => {
+  const { participantName, participantVersion, environmentName, deployed } =
+    req.body;
 
-  if (!participantName || !participantVersion || !environmentName || deployed === undefined) {
-    return res.status(400).json({ error: 'Request body is invalid' });
+  if (
+    !participantName ||
+    !participantVersion ||
+    !environmentName ||
+    deployed === undefined
+  ) {
+    return res.status(400).json({ error: "Request body is invalid" });
   }
 
   const environmentRecord = await db.createEnvironment(environmentName);
 
-  const participantVersionRecord = await db.getParticipantVersion(participantName, participantVersion);
+  const participantVersionRecord = await db.getParticipantVersion(
+    participantName,
+    participantVersion
+  );
 
   if (!participantVersionRecord) {
-    return res.status(400).json({error: 'Participant version does not exist'})
+    return res
+      .status(400)
+      .json({ error: "Participant version does not exist" });
   }
 
   if (deployed) {
     await db.addParticipantVersionToEnvironment(
-      participantVersionRecord.participantVersionId, 
+      participantVersionRecord.participantVersionId,
       environmentRecord.environmentId
     );
   } else {
-    await db.removeParticipantFromEnvironment(participantVersionRecord.participantVersionId);
+    await db.removeParticipantFromEnvironment(
+      participantVersionRecord.participantVersionId
+    );
   }
 
   res.status(200).json(req.body);
 });
 
-
 // Everything that is commented out is currently not being used - 7/5
 
-// /**
-//  * Gets all participants
-//  * @returns {array} All participants
-//  */
+/**
+ * Gets all participants
+ * @returns {array} All participants
+ */
 // router.get("/", async (_req, res) => {
 //   const participants = await Participant.query();
 //   res.json(participants);

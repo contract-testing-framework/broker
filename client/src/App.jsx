@@ -5,6 +5,7 @@ import { integrationService } from "./services/apiService.js";
 import AppShell from "./components/AppShell.jsx";
 import { Integration } from "./components/Integration.jsx";
 import SettingsMenu from "./components/SettingsMenu.jsx";
+import DeployGuard from "./components/DeployGuard"
 import { Card, Title, Image } from "@mantine/core";
 
 const fetchAndSet = async (service, setter) => {
@@ -51,6 +52,7 @@ const App = () => {
           path="/settings/*"
           element={<SettingsMenu integrations={integrations} />}
         />
+        <Route path="/deploy-guard" element={<DeployGuard />} />
         <Route
           path="*"
           element={

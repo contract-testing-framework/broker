@@ -17,7 +17,7 @@ import {
   Group,
 } from "@mantine/core";
 import IntegrationNavLinks from "./IntegrationNavLinks.jsx";
-import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { ActionIcon, useMantineColorScheme, Button } from "@mantine/core";
 import { IconSun, IconMoonStars, IconSettings } from "@tabler/icons-react";
 import Integration from "../models/Integration.js";
 
@@ -89,6 +89,18 @@ const MyAppShell = ({ children, integrations }) => {
               </Anchor>
             </Link>
             <Flex style={{ marginLeft: "auto" }}>
+            <Button
+                className="deploy-guard-button"
+                variant="outline"
+                color={dark ? "yellow" : "blue"}
+                onClick={() => navigate("/deploy-guard")}
+                style={{
+                  marginRight: "2rem",
+                  transition: "background-color 0.2s, color 0.2s",
+                }}
+              >
+                Deploy Guard
+              </Button>
               <ActionIcon
                 variant="outline"
                 color={dark ? "yellow" : "blue"}
