@@ -1,13 +1,10 @@
-import { Anchor, Card, Timeline, Text, Code } from "@mantine/core";
+import { Card, Timeline, Text, Code } from "@mantine/core";
 import {
-  // IconGitBranch,
-  // IconGitPullRequest,
   IconGitCommit,
-  // IconMessageDots,
   IconCertificate2,
   IconClipboardList,
+  IconArrowBigUp,
 } from "@tabler/icons-react";
-// import TimeAgo from "javascript-time-ago";
 import ReactTimeAgo from "react-time-ago";
 import Spec from "../models/Spec.js";
 import Contract from "../models/Contract.js";
@@ -16,20 +13,114 @@ import PropTypes from "prop-types";
 import Integration from "../models/Integration";
 import { uniqueByHash, uniqueById } from "../utils/helpers.js";
 
+const colors = {
+  consumer: {
+    version: "red",
+    contract: "orange",
+    deployment: "yellow",
+  },
+  provider: {
+    version: "green",
+    spec: "blue",
+    deployment: "violet",
+  },
+};
+
+const icons = {
+  consumer: {
+    version: <IconGitCommit size={24} />,
+    contract: <IconClipboardList size={24} />,
+    deployment: <IconArrowBigUp size={24} />,
+  },
+  provider: {
+    version: <IconGitCommit size={24} />,
+    spec: <IconCertificate2 size={24} />,
+    deployment: <IconArrowBigUp size={24} />,
+  },
+};
+
+const setupProps = (item, integration) => {
+  switch (item.constructor) {
+    case Spec: {
+      return {
+        createdAt: item.createdAt,
+        docType: "Provider Spec",
+        participantName: integration.provider.name,
+        message: `${integration.provider.name} added new provider spec version ${item.spec.info.version}`,
+        color: colors.provider.spec,
+        icon: icons.provider.spec,
+        title: `${integration.provider.name} Spec ${item.spec.info.version}`,
+      };
+    }
+
+    case Contract: {
+      return {
+        createdAt: item.createdAt,
+        docType: "Consumer Contract",
+        participantName: integration.consumer.name,
+        message: `${integration.consumer.name} added a new consumer contract`,
+        color: colors.consumer.contract,
+        icon: icons.consumer.contract,
+        title: `${integration.consumer.name} Contract ${item.hash.slice(0, 6)}`,
+      };
+    }
+
+    case ParticipantVersion: {
+      const props = {};
+
+      props.createdAt = item.createdAt;
+      if (item.participantType == "consumer") {
+        props.docType = "Consumer Version";
+        props.participantName = integration.consumer.name;
+        props.color = colors.consumer.version;
+        props.icon = icons.consumer.version;
+      } else {
+        props.docType = "Provider Version";
+        props.participantName = integration.provider.name;
+        props.color = colors.provider.version;
+        props.icon = icons.provider.version;
+      }
+      props.title = `${props.participantName} version ${item.version}`;
+      props.message = (
+        <>
+          New {props.docType.toLowerCase()} version
+          <Code>{item.version}</Code>
+        </>
+      );
+      props.lineVariant = "dashed";
+      return props;
+    }
+
+    default: {
+      const props = {};
+
+      props.createdAt = item.createdAt;
+
+      props.docType = "Deployment";
+
+      if (item.participantType === "consumer") {
+        props.participantName = integration.consumer.name;
+        props.icon = icons.consumer.deployment;
+      } else {
+        props.participantName = integration.provider.name;
+        props.icon = icons.provider.deployment;
+      }
+      props.environmentName = item.environment.environmentName;
+      props.color = colors[item.participantType].deployment;
+      props.title = `${props.participantName} Deployment`;
+      props.message = (
+        <>
+          {`${props.participantName} deployed version ${item.participantVersion.version} to`}
+          <Code>{item.environment.environmentName}</Code>
+        </>
+      );
+      return props;
+    }
+  }
+};
+
 const IntegrationTimeline = ({ integration }) => {
-  // console.log("integration:");
-  // console.log(integration);
-
   const { comparisons } = integration;
-
-  // let participantVersions = uniqueById(
-  //   comparisons.reduce((acc, comp) => {
-  //     return acc.concat([
-  //       ...comp.consumerContract.consumerVersions,
-  //       ...comp.providerSpec.providerVersions,
-  //     ]);
-  //   }, [])
-  // );
 
   const consumerContracts = uniqueByHash(
     comparisons.map((comparison) => {
@@ -73,20 +164,6 @@ const IntegrationTimeline = ({ integration }) => {
     })
     .flat();
 
-  console.log("deployments:");
-  console.log(deployments);
-
-  // console.log("consumerVersions:");
-  // console.log(consumerVersions);
-  // console.log("providerVersions:");
-  // console.log(providerVersions);
-
-  // console.log("consumerContracts:");
-  // console.log(consumerContracts);
-
-  // console.log("providerSpecs:");
-  // console.log(providerSpecs);
-
   let timeLineItems = [
     ...participantVersions,
     ...providerSpecs,
@@ -94,79 +171,7 @@ const IntegrationTimeline = ({ integration }) => {
     ...deployments,
   ]
     .sort((a, b) => b.createdAt - a.createdAt)
-    .map((item) => {
-      const props = {};
-
-      if (item instanceof Spec) {
-        props.docType = "Provider Spec";
-        props.participantName = integration.provider.name;
-        props.message = `${props.participantName} added new provider spec version ${item.spec.info.version}`;
-        props.color = "blue";
-        props.icon = <IconCertificate2 size={24} />;
-        props.title = `${props.participantName} Spec ${item.spec.info.version}`;
-      } else if (item instanceof Contract) {
-        props.docType = "Consumer Contract";
-        props.participantName = integration.consumer.name;
-        props.message = `${props.participantName} added a new consumer contract`;
-        props.color = "orange";
-        props.icon = <IconClipboardList size={24} />;
-        props.title = `${props.participantName} Contract ${item.hash.slice(
-          0,
-          6
-        )}`;
-      } else if (item instanceof ParticipantVersion) {
-        if (item.participantType == "consumer") {
-          props.docType = "Consumer Version";
-          props.participantName = integration.consumer.name;
-          props.color = "green";
-          props.title = `${integration.consumer.name} app version ${item.version}`;
-        } else {
-          props.docType = "Provider Version";
-          props.participantName = integration.provider.name;
-          props.color = "red";
-        }
-        props.title = `${props.participantName} app version ${item.version}`;
-        props.message = `${
-          props.participantName
-        } added new ${props.docType.toLowerCase()} version ${item.version}`;
-        props.icon = <IconGitCommit size={24} />;
-        props.lineVariant = "dashed";
-      } else {
-        props.docType = "Deployment";
-        props.participantName =
-          item.participantType === "consumer"
-            ? integration.consumer.name
-            : integration.provider.name;
-        props.environmentName = item.environment.environmentName;
-        props.color = "gray";
-        props.title = `${props.participantName} Deployment`;
-        props.message = (
-          <>
-            {`${props.participantName} deployed version ${item.participantVersion.version} to`}
-            <Code>{item.environment.environmentName}</Code>
-          </>
-        );
-        props.icon = <IconGitCommit size={24} />;
-      }
-
-      return (
-        <Timeline.Item
-          bullet={props.icon}
-          title={props.title}
-          key={`${item.participantName}-${item.createdAt}`}
-          bulletSize={36}
-          color={props.color}
-          lineVariant={props.lineVariant || "solid"}
-        >
-          <Anchor color="dimmed" size="sm">
-            {props.message}
-          </Anchor>
-          <Text size="xs" mt={4}>
-            <ReactTimeAgo date={item.createdAt} />
-          </Text>
-        </Timeline.Item>
-      );
-    });
+    .map((item) => setupProps(item, integration));
 
   return (
     <Card mt={"lg"}>
@@ -177,65 +182,24 @@ const IntegrationTimeline = ({ integration }) => {
         ml={"5rem"}
         mt={"3rem"}
       >
-        {timeLineItems}
+        {timeLineItems.map((item, index) => (
+          <Timeline.Item
+            bullet={item.icon}
+            title={item.title}
+            key={index}
+            bulletSize={36}
+            color={item.color}
+            lineVariant={item.lineVariant || "solid"}
+          >
+            <Text color="dimmed" size="sm">
+              {item.message}
+            </Text>
+            <Text size="xs" mt={4}>
+              <ReactTimeAgo date={item.createdAt} />
+            </Text>
+          </Timeline.Item>
+        ))}
       </Timeline>
-      {/* <Timeline active={1} bulletSize={24} lineWidth={2}>
-        <Timeline.Item bullet={<IconGitBranch size={12} />} title="New branch">
-          <Text color="dimmed" size="sm">
-            You&apos;ve created new branch{" "}
-            <Text variant="link" component="span" inherit>
-              fix-notifications
-            </Text>{" "}
-            from master
-          </Text>
-          <Text size="xs" mt={4}>
-            2 hours ago
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item bullet={<IconGitCommit size={12} />} title="Commits">
-          <Text color="dimmed" size="sm">
-            You&apos;ve pushed 23 commits to
-            <Text variant="link" component="span" inherit>
-              fix-notifications branch
-            </Text>
-          </Text>
-          <Text size="xs" mt={4}>
-            52 minutes ago
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item
-          title="Pull request"
-          bullet={<IconGitPullRequest size={12} />}
-          lineVariant="dashed"
-        >
-          <Text color="dimmed" size="sm">
-            You&apos;ve submitted a pull request
-            <Text variant="link" component="span" inherit>
-              Fix incorrect notification message (#187)
-            </Text>
-          </Text>
-          <Text size="xs" mt={4}>
-            34 minutes ago
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item
-          title="Code review"
-          bullet={<IconMessageDots size={12} />}
-        >
-          <Text color="dimmed" size="sm">
-            <Text variant="link" component="span" inherit>
-              Robert Gluesticker
-            </Text>{" "}
-            left a code review on your pull request
-          </Text>
-          <Text size="xs" mt={4}>
-            12 minutes ago
-          </Text>
-        </Timeline.Item>
-      </Timeline> */}
     </Card>
   );
 };

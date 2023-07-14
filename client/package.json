@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@esbuild/darwin-arm64": "^0.18.12",
     "@mantine/core": "^6.0.15",
     "@mantine/dates": "^6.0.15",
     "@mantine/form": "^6.0.16",
