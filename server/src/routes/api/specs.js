@@ -65,6 +65,10 @@ router.post("/", async (req, res) => {
 
   webhook.newSpecEvent(specRecord);
 
+  if (providerVersion) {
+    webhook.providerVerifiedEvent(specRecord);
+  }
+
   comp.compareWithConsumerContracts(specRecord.providerSpecId);
 
   res.status(201).json(specRecord);

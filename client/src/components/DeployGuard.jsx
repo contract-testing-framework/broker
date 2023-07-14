@@ -98,7 +98,7 @@ const DeployGuard = () => {
           }}
         >
           <Text style={{ textAlign: "left", marginTop: "0.25rem" }}>
-            Application:
+            Service:
             <span style={{ color: "red", marginLeft: "0.25rem" }}>*</span>
           </Text>
           <Select
