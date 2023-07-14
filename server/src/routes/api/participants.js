@@ -4,17 +4,7 @@ import "express-async-errors";
 
 const router = express.Router();
 
-/*
-Updates the deployment status of a participant version in an environment
-
-Request Body:
-{
-  participantName: (string)
-  participantVersion: (string)
-  environmentName: (string)
-  deployed: (bool)
-}
-*/
+// updates the deployment status of a participant version in an environment
 router.patch("/", async (req, res) => {
   const { participantName, participantVersion, environmentName, deployed } =
     req.body;
