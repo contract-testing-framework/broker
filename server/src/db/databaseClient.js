@@ -153,7 +153,7 @@ class DatabaseClient {
     const joinGraph = [
       "consumer",
       "provider",
-      "comparisons.[consumerContract.consumerVersions.environments, providerSpec.providerVersions.environments]",
+      "comparisons.[consumerContract.consumerVersions.[environments, deployments.environment], providerSpec.providerVersions.[environments, deployments.environment]]",
     ];
     const integrationById = await Integration.query()
       .findById(Number(id))

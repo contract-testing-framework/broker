@@ -57,12 +57,16 @@ const publishContracts = (contract) => {
   const specPath = srcDir + `/../data/sample/sieve-server-spec_v3.json`;
 
   execSync(
-    `${srcDir}/../../../signet publish --path=${contractPath} --type=consumer --version=${getRandomInt()} --branch=main --broker-url=http://localhost:3001`
+    `${srcDir}/../../../signet publish --path=${contractPath} --type=consumer --version=${
+      "1" || getRandomInt(0, 100)
+    } --branch=main --broker-url=http://localhost:3001`
   );
   execSync(
     `${srcDir}/../../../signet publish --path=${specPath} --type=provider --provider-name=${
       contract.provider.name
-    } --version=${getRandomInt()} --branch=main --broker-url=http://localhost:3001`
+    } --version=${
+      "A" || getRandomInt(0, 100)
+    } --branch=main --broker-url=http://localhost:3001`
   );
 
   execSync(
@@ -71,7 +75,7 @@ const publishContracts = (contract) => {
 };
 
 // for (let i = 0; i < 4; i++) {
-publishContracts(generateContract("platinumService"));
-publishContracts(generateContract(undefined, "platinumService"));
-publishContracts(generateContract("radiumService"));
+publishContracts(generateContract("cobaltService", "magnesiumService"));
+// publishContracts(generateContract(undefined, "platinumService"));
+// publishContracts(generateContract("radiumService"));
 // }

@@ -3,6 +3,7 @@ import ConsumerContract from "./ConsumerContract.js";
 import ProviderSpec from "./ProviderSpec.js";
 import Participant from "./Participant.js";
 import Environment from "./Environment.js";
+import VersionEnvironment from "./VersionEnvironment.js";
 
 class ParticipantVersion extends BaseModel {
   static get tableName() {
@@ -52,6 +53,14 @@ class ParticipantVersion extends BaseModel {
             to: "versionsEnvironments.environmentId",
           },
           to: "environments.environmentId",
+        },
+      },
+      deployments: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: VersionEnvironment,
+        join: {
+          from: "participantVersions.participantVersionId",
+          to: "versionsEnvironments.participantVersionId",
         },
       },
     };

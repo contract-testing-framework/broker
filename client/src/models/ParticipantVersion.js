@@ -17,6 +17,7 @@ class ParticipantVersion extends BaseModel {
     participantId,
     participantBranch,
     environments = [],
+    deployments = [],
   }) {
     super({ createdAt, updatedAt });
     this.id = participantVersionId;
@@ -31,6 +32,7 @@ class ParticipantVersion extends BaseModel {
     this.environments = environments.map(
       (environment) => new Environment(environment)
     );
+    this.deployments = deployments;
   }
 
   environmentNames() {
