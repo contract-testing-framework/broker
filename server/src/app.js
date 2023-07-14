@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import morgan from "morgan";
 import "./db/db.js";
+import path from "path";
 
 import indexRouter from "./routes/index.js";
 import apiRouter from "./routes/api/api.js";
@@ -22,6 +23,10 @@ app.use(express.json());
 
 app.use("/", indexRouter);
 app.use("/api", apiRouter);
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.resolve(srcDir + "/../dist/index.html"));
+});
 
 const PORT = process.env.PORT;
 
