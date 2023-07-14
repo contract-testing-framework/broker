@@ -27,21 +27,6 @@ const creationConnection = Knex(creationConfig);
 
 async function createDatabase() {
   try {
-    // const dbAlreadyExists =
-    //   (
-    //     await creationConnection.raw(
-    //       `SELECT FROM pg_database WHERE datname = '${dbName}'`
-    //     )
-    //   ).rowCount > 0;
-
-    // if (!dbAlreadyExists) {
-    // }
-
-    // console.log(
-    //   `Database '${dbName}' ${
-    //     dbAlreadyExists ? "already exists" : "created successfully"
-    //   }.\n`
-    // );
     await creationConnection.raw(`CREATE DATABASE ${database}`);
     console.log(`  - Database '${database}' created successfully.`);
   } catch (error) {
@@ -55,13 +40,6 @@ const migrationConnection = Knex(config);
 
 async function runMigrations() {
   try {
-    // const pendingMigrations = await migrationConnection.migrate.list()[1];
-    // if (pendingMigrations) {
-    //   console.log(`Found ${pendingMigrations.length} unapplied migrations:`);
-    //   console.table(pendingMigrations);
-    // } else {
-    //   console.log("No unapplied migrations found.");
-    // }
     await migrationConnection.migrate.latest();
     console.log("  - Migrations ran successfully.\n");
   } catch (error) {

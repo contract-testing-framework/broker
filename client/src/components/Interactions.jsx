@@ -72,7 +72,7 @@ const Interactions = ({ comparison }) => {
           return (
             <Accordion.Item
               key={idx}
-              value={`interation ${idx}`}
+              value={`interaction ${idx}`}
               style={{ textAlign: "left" }}
             >
               <Accordion.Control>

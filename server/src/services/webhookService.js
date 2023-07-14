@@ -16,11 +16,9 @@ class WebhookService {
       publishedAt: specRecord.createdAt,
     };
 
-    // if we need custom headers/body schema, get them here
     const urls = await db.getURLsForEvent("specPublishEvents", integrationIds);
 
     for (let url of urls) {
-      // and pass them in to this method
       this.sendWebhook(url, payload);
     }
   }
@@ -32,7 +30,7 @@ class WebhookService {
       body: JSON.stringify(body),
     };
 
-    fetch(url, options); // don't await, fire and forget
+    fetch(url, options);
   }
 
   async newComparisonEvent(comparison) {

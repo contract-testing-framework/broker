@@ -25,14 +25,10 @@ services:
       # - ENABLE_DB_SSL=true
     ports:
       - "3001:3001"
-    # volumes:
-      # - .:/home/node/app
-      # - node_modules:/home/node/app/node_modules
     networks:
       - app-network
     working_dir: /home/node/app
     command: ./wait-for.sh db:5432 -t 500 -- npm start
-    # command: /home/node/app/node_modules/.bin/nodemon src/app.js
   db:
     image: signetframework/signet-db:latest
     healthcheck:

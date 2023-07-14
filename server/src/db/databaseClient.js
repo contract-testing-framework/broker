@@ -268,7 +268,6 @@ class DatabaseClient {
   }
 
   async getProviderVersionsForEnv(environmentId) {
-    //console.log(environmentId, typeof environmentId);
     const providerVersions = await VersionSpec.query()
       .innerJoin(
         "participantVersions",
@@ -316,12 +315,10 @@ class DatabaseClient {
   }
 
   async removeParticipantFromEnvironment(participantVersionId, environmentId) {
-    return await VersionEnvironment.query()
-      .delete()
-      .where({
-        participantVersionId,
-        environmentId,
-      });
+    return await VersionEnvironment.query().delete().where({
+      participantVersionId,
+      environmentId,
+    });
   }
 
   // Given participantId
@@ -405,8 +402,9 @@ class DatabaseClient {
       .where("versionsContracts.consumerVersionId", participantVersionId)
       .where("comparisons.comparisonStatus", "Success");
   }
+
   // Given participantVersionId
-  // Get all copmatible consumer versions for participant
+  // Get all compatible consumer versions for participant
   async getCompatibleConsumerVersions(participantVersionId) {
     return ParticipantVersion.query()
       .innerJoin(

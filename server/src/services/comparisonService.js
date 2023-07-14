@@ -10,7 +10,7 @@ class ComparisonService {
     const verifier = new Verifier();
 
     try {
-      const result = await verifier.verify2(
+      const result = await verifier.verify(
         contractRecord.contract.contractText,
         specRecord.spec.specText
       );

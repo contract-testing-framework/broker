@@ -4,9 +4,6 @@ class BaseModel extends Model {
   static get defaultGraphOptions() {
     return {
       minimize: true,
-      // separator: "->",
-      // aliases: {},
-      // maxBatchSize: 10000,
     };
   }
 }

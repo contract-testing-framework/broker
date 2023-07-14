@@ -5,6 +5,7 @@ import comp from "../../services/comparisonService.js";
 import { validateSchema } from "../../services/contractSchema.js";
 import YAML from "yaml";
 import "express-async-errors";
+
 const router = express.Router();
 
 /**
@@ -16,7 +17,6 @@ const router = express.Router();
  * @param {string} providerBranch
  * @returns {object} The created spec
  */
-
 router.get("/", async (req, res) => {
   const providerName = req.query.provider;
   if (providerName) {

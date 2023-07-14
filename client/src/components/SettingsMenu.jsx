@@ -12,7 +12,6 @@ const SettingsMenu = ({ integrations }) => {
 
   // Add more submenus here
   const subMenus = {
-    // General: <Title order={3}>General</Title>,
     Webhooks: <WebhooksSubmenu integrations={integrations} />,
   };
 

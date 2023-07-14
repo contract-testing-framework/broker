@@ -47,7 +47,6 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
   const options = {
     layout: {
       improvedLayout: true,
-      // clusterThreshold: 200,
       randomSeed: 1,
       hierarchical: {
         enabled: false,
@@ -57,13 +56,12 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
         blockShifting: true,
         edgeMinimization: true,
         parentCentralization: true,
-        direction: "UD", // UD, DU, LR, RL
-        sortMethod: "hubsize", // hubsize, directed
-        shakeTowards: "leaves", // roots, leaves
+        direction: "UD",
+        sortMethod: "hubsize",
+        shakeTowards: "leaves",
       },
     },
     physics: {
-      // enabled: false,
       enabled: true,
       barnesHut: {
         avoidOverlap: 1,
@@ -71,28 +69,7 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
         damping: 1,
         springLength: 180,
       },
-      // repulsion: {
-      //   centralGravity: 0.2,
-      //   springLength: 200,
-      //   springConstant: 0.05,
-      //   nodeDistance: 500,
-      //   damping: 0.09,
-      // },
-      // hierarchicalRepulsion: {
-      //   centralGravity: 0.0,
-      //   springLength: 100,
-      //   springConstant: 0.01,
-      //   nodeDistance: 120,
-      //   damping: 0.09,
-      //   avoidOverlap: 0.1,
-      // },
     },
-    // configure: {
-    //   enabled: true,
-    //   filter: true,
-    //   showButton: true,
-    //   // container: configContainer,
-    // },
     autoResize: true,
     nodes: {
       margin: 10,
@@ -120,36 +97,17 @@ const NetworkGraph = ({ integrations, setIntegrationsFilter }) => {
         to: -5.3,
       },
       arrowStrikethrough: true,
-      // shadow: true,
     },
   };
 
   const events = {
-    // select: ({ nodes, edges }) => {
-    //   console.log("Selected nodes:");
-    //   console.log(nodes);
-    //   console.log("Selected edges:");
-    //   console.log(edges);
-    // },
-    // doubleClick: ({ items, edges, canvas }) => {
     doubleClick: ({ edges: edgeIds, nodes: nodeIds }) => {
-      // console.log(event);
-      // console.table({
-      //   nodes: event.nodes,
-      //   edges: event.edges,
-      //   items: event.items,
-      // });
-      //console.log(`nodes.length = ${nodeIds.length}`);
-      //console.log(`edges.length = ${edgeIds.length}`);
       if (
         edgeIds.length === 1 &&
         (nodeIds.length === 2 || nodeIds.length === 0)
       ) {
-        //console.log(`I should navigate to /integrations/${edgeIds[0]}`);
         navigate(`/integrations/${edgeIds[0]}`);
       } else if (nodeIds.length === 1) {
-        // console.log(`nodes[0] = ${nodes[0]}`);
-        //console.log(edgeIds, nodeIds);
         setIntegrationsFilter([
           nodes.find((node) => node.id == nodeIds[0]).label,
         ]);

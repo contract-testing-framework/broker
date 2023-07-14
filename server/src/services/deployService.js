@@ -2,9 +2,6 @@ import "dotenv/config";
 import db from "../db/databaseClient.js";
 
 class DeployService {
-  // Given participantVersionId and envId
-  // Check if participant version is compatible with providers deployed on environment
-  // Returns errors array
   async checkWithProviders(participantVersionId, envId) {
     const participantVersion = await db.getParticipantVersionById(
       participantVersionId
@@ -49,9 +46,6 @@ class DeployService {
     return errors;
   }
 
-  // Given participantVersionId and envId
-  // Check if participant version is compatible with providers deployed on environment
-  // Returns errors array
   async checkWithConsumers(participantVersionId, envId) {
     const participantVersion = await db.getParticipantVersionById(
       participantVersionId
@@ -88,10 +82,6 @@ class DeployService {
     return errors;
   }
 
-  // Given participantVersionId and envId
-  // Returns Map
-  // Keys: participantId of every provider of participant
-  // Values: array of all participantVersionIds of participantId that are deployed on environment
   async getProviderMap(participantId, envId) {
     const providers = await db.getProviders(participantId);
 
@@ -113,10 +103,6 @@ class DeployService {
     return providerMap;
   }
 
-  // Given participantVersionId and envId
-  // Returns Map
-  // Keys: participantId of every consumer of participant
-  // Values: array of all participantVersionIds of participantId that are deployed on environment
   async getConsumerMap(participantId, envId) {
     const consumers = await db.getConsumers(participantId);
 

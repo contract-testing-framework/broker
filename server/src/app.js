@@ -13,11 +13,7 @@ const app = express();
 
 export const srcDir = dirname(fileURLToPath(import.meta.url));
 
-// Loggers
 app.use(morgan("dev"));
-// app.use(loggers.console.req());
-// app.use(loggers.console.res());
-// app.use(loggers.file.req());
 app.use(loggers.file.res());
 
 app.use(express.static(srcDir + "/../dist"));

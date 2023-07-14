@@ -56,14 +56,9 @@ const App = () => {
           path="/"
           element={
             <Card>
-              {/* <Title order={1}>Signet Contract Broker</Title> */}
-              {/* <Image
-                src="/transparent-logo-horizontal-mn.svg"
-                maw={1000}
-                mx="auto"
-                radius="md"
-                fit="contain"
-              /> */}
+              <Title order={2} mt={"lg"} variant="gradient">
+                Service Graph
+              </Title>
               <NetworkGraph
                 integrations={filteredIntegrations}
                 setIntegrationsFilter={setIntegrationsFilter}
