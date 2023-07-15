@@ -23,7 +23,7 @@ const NewWebhookForm = ({ integrations }) => {
   const form = useForm({
     initialValues: {
       integrationId: undefined,
-      events: ["comparison", "specPublish"],
+      events: ["comparison", "specPublish", "providerVerification"],
       url: "",
       enabled: true,
       description: "",
@@ -102,13 +102,8 @@ const NewWebhookForm = ({ integrations }) => {
             label="Events"
             required
             {...form.getInputProps("events", { type: "checkbox" })}
-            defaultValue={["comparison", "specPublish"]}
+            defaultValue={["comparison", "specPublish", "providerVerification"]}
           >
-            {/* <Checkbox
-              label="New provider verification"
-              value="providerVerification"
-              {...eventCheckBoxProps}
-            /> */}
             <Checkbox
               label="New spec published"
               value="specPublish"
@@ -117,6 +112,11 @@ const NewWebhookForm = ({ integrations }) => {
             <Checkbox
               label="New comparison published"
               value="comparison"
+              {...eventCheckBoxProps}
+            />
+            <Checkbox
+              label="New provider verification"
+              value="providerVerification"
               {...eventCheckBoxProps}
             />
           </Checkbox.Group>
@@ -146,6 +146,7 @@ const NewWebhookForm = ({ integrations }) => {
           <Group position="center" mt="md">
             <Button type="submit">Create</Button>
           </Group>
+
           {error && (
             <Group position="center" mt="md">
               <Text color="red" fw={"bold"}>

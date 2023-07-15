@@ -7,38 +7,51 @@
 2. Provider or consumer team uploads the spec to the broker.
 
     ```bash
-    signet publish --path=sieve-server-spec_v3.json --type=provider -n=sieveProvider --branch=main
+      signet publish
     ```
+
+## Consumer Contract Generation
+
+  ```bash
+    signet proxy
+  ```
 
 ## 1. First Release
 
-1. Consumer team implements their service, they test and generate the consumer contract, and publish it.
+1. Provider team implements provider, they test against the spec, and tells the broker to associate the provider version with the spec.
 
     ```bash
-    signet publish --path=sieveService-sieveProvider.json --type=consumer --version=1 --branch=main
+    signet test
     ```
 
-2. Consumer team adds webhook in GUI.
-
-3. Provider team implements provider, they test against the spec, and tells the broker to associate the provider version with the spec.
+2. Consumer team implements their service, they test and generate the consumer contract, and publish it.
 
     ```bash
-    signet publish --path=sieve-server-spec_v3.json --type=provider --version=A -n=sieveProvider --branch=main
+    signet publish
     ```
 
-4. Provider deploys their version and records the deployment in the broker
+3. Can i deploy gui
+
+5. Provider deploys their version and records the deployment in the broker
 
     ```bash
-    signet update-deployment --name=sieveProvider --version=A --environment=prod
+    signet update-deployment --environment=production
     ```
 
-5. [potential feature: consumer team gets webhook]
+4.  can i deploy cli
+
+    ```bash
+      signet deploy-guard --environment=production
+    ```
 
 6. Consumer deploys
 
     ```bash
-    signet update-deployment --name=sieveService --version=1 --environment=prod
+    signet update-deployment --environment=production
     ```
+
+
+7. Consumer team adds webhook in GUI.
 
 ## 2. Second Release
 
