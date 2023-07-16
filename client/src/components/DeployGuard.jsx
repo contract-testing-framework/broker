@@ -29,8 +29,6 @@ const DeployGuard = () => {
         return env.environmentName;
       });
 
-      console.log(allEnvs);
-
       setEnvironmentData(allEnvs);
     };
 
