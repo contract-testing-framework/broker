@@ -65,7 +65,6 @@ router.post("/", async (req, res) => {
 
   if (providerVersion) {
     webhook.providerVerifiedEvent(specRecord);
-    webhook.newSpecEvent(specRecord);
   } else {
     webhook.newSpecEvent(specRecord);
   }
