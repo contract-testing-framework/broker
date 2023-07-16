@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Select, Text, Button, Paper, Card, Title } from "@mantine/core";
+import Participant from "../models/Participant";
 import {
   getCurrentParticipantVersions,
-  getCurrentEnvironments,
   getAllData,
   readyToDeployResults,
 } from "../services/deployGuardService";
@@ -22,7 +22,14 @@ const DeployGuard = () => {
   useEffect(() => {
     const setData = async () => {
       const deploymentData = await getAllData();
-      setParticipants(deploymentData);
+      setParticipants(
+        deploymentData.participantData.map((datum) => new Participant(datum))
+      );
+      const allEnvs = deploymentData.allEnvs.map((env) => {
+        return env.environmentName;
+      });
+
+      setEnvironmentData(allEnvs);
     };
 
     setData();
@@ -33,23 +40,20 @@ const DeployGuard = () => {
     const currentVersions = getCurrentParticipantVersions(value, participants);
     setVersionData(currentVersions);
     setVersion("");
-    setEnvironment("");
     setIsReadyToDeploy(false);
     setResults({ status: null, errors: [] });
   };
 
   const handleVersionChange = (value) => {
     setVersion(value);
-    const currentEnvs = getCurrentEnvironments(participant, participants);
-    setEnvironmentData(currentEnvs);
-    setEnvironment("");
-    setIsReadyToDeploy(false);
+    setIsReadyToDeploy(participant && value && environment);
     setResults({ status: null, errors: [] });
   };
 
   const handleEnvironmentChange = (value) => {
     setEnvironment(value);
     setIsReadyToDeploy(participant && version && value);
+    setResults({ status: null, errors: [] });
   };
 
   const handleReadyToDeploy = async () => {
