@@ -26,7 +26,7 @@ const DeployGuard = () => {
         deploymentData.participantData.map((datum) => new Participant(datum))
       );
       const allEnvs = deploymentData.allEnvs.map((env) => {
-        return env.name;
+        return env.environmentName;
       });
 
       console.log(allEnvs);
