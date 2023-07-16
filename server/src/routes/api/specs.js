@@ -63,10 +63,11 @@ router.post("/", async (req, res) => {
     providerBranch
   );
 
-  webhook.newSpecEvent(specRecord);
-
   if (providerVersion) {
     webhook.providerVerifiedEvent(specRecord);
+    webhook.newSpecEvent(specRecord);
+  } else {
+    webhook.newSpecEvent(specRecord);
   }
 
   comp.compareWithConsumerContracts(specRecord.providerSpecId);
