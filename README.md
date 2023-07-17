@@ -1,7 +1,16 @@
 [![Server Tests](https://github.com/contract-testing-framework/broker/actions/workflows/test_server.yml/badge.svg)](https://github.com/contract-testing-framework/broker/actions/workflows/test_server.yml)
 [![CodeQL](https://github.com/contract-testing-framework/broker/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/contract-testing-framework/broker/actions/workflows/github-code-scanning/codeql)
 
-# README.md
+`signet-broker` is the backend and web interface for the Signet contract testing framework. A description of Signet's core use case, features, and documentation for the Signet broker lives here. The [signet-cli README](https://github.com/signet-framework/signet-cli) explains the fuctionality and documentation of the Signet command line interface.
+&nbsp;  
+
+# Core Use Case
+Signet provides an open-source, low-configuration solution for schema-based contract testing of microservices. Signet is designed for small to medium sized organizations that currently have a small number of microservices and are anticipanting significant growth. Signet is an easy, low-configuration way to add contract testing into a CI/CD workflow without writing additional tests. It uses popular open-source specifications to enable a smooth transition to a SaaS solution if the needs of the organization change in the future.
+
+Example use case:
+An organization with existing service tests (with can implement contract testing without writing any additional tests. If an organization does not have service test
+
+
 
 ## Server Setup
 
