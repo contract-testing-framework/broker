@@ -148,7 +148,7 @@ const DeployGuard = () => {
             Ready to Deploy?
           </Button>
 
-          {results.status === "true" && (
+          {results.status === true && (
             <div
               style={{
                 position: "absolute",
@@ -191,7 +191,7 @@ const DeployGuard = () => {
             </div>
           )}
 
-          {results.status === "false" && (
+          {results.status === false && (
             <div
               style={{
                 position: "absolute",
