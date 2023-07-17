@@ -115,7 +115,6 @@ const DeployGuard = () => {
             onChange={(value) => handleParticipantChange(value)}
             placement="bottom-start"
           />
-
           <Text style={{ textAlign: "left", marginTop: "0.25rem" }}>
             Version:
             <span style={{ color: "red", marginLeft: "0.25rem" }}>*</span>
@@ -128,7 +127,6 @@ const DeployGuard = () => {
             onChange={(value) => handleVersionChange(value)}
             placement="bottom-start"
           />
-
           <Text style={{ textAlign: "left", marginTop: "0.25rem" }}>
             Deploy to:
             <span style={{ color: "red", marginLeft: "0.25rem" }}>*</span>
@@ -141,7 +139,6 @@ const DeployGuard = () => {
             onChange={(value) => handleEnvironmentChange(value)}
             placement="bottom-start"
           />
-
           <Button
             style={{ marginTop: "2rem", borderRadius: "20px", width: "18%" }}
             variant="gradient"
@@ -151,7 +148,6 @@ const DeployGuard = () => {
           >
             Ready to Deploy?
           </Button>
-
           {results.status === true && (
             <div
               style={{
@@ -194,7 +190,6 @@ const DeployGuard = () => {
               </Paper>
             </div>
           )}
-
           {results.status === false && (
             <div
               style={{
