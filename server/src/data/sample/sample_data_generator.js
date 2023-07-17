@@ -44,7 +44,6 @@ const generateContract = (consumerName, providerName) => {
   const contractPath =
     srcDir + `/../data/sample/${consumerName}-${providerName}.json`;
 
-  // console.log(contract);
   fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2));
   return contract;
 };
