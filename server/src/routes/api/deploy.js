@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
       )),
     ];
 
-    const status = errors.length === 0 ? "true" : "false";
+    const status = errors.length === 0 ? true : false;
 
     return res.send({ status, errors });
   } catch (err) {
