@@ -8,7 +8,9 @@ import SettingsMenu from "./components/SettingsMenu.jsx";
 import DeployGuard from "./components/DeployGuard";
 import { Card, Title } from "@mantine/core";
 import NetworkGraph from "./components/NetworkGraph.jsx";
+import sse from "./services/sseService";
 import DSU from "./utils/dsu";
+import { notifications } from "@mantine/notifications";
 
 const fetchAndSet = async (service, setter) => {
   const data = await service.getAll();
@@ -41,6 +43,17 @@ const App = () => {
     setFilteredIntegrations(filterIntegrations(integrationsFilter));
     setDsu(new DSU(integrations));
   }, [integrationsFilter, integrations]);
+
+  useEffect(() => {
+    sse.connect((data) => {
+      fetchAndSet(integrationService, setIntegrations);
+      notifications.show({ message: data.message, autoClose: false });
+    });
+
+    return () => {
+      sse.close();
+    };
+  }, []);
 
   const path = useLocation().pathname;
 

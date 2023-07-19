@@ -3,6 +3,7 @@ import db from "../../db/databaseClient.js";
 import comp from "../../services/comparisonService.js";
 import { validateSchema } from "../../services/contractSchema.js";
 import "express-async-errors";
+import { sseResponses } from "./events.js";
 
 const router = express.Router();
 
@@ -41,6 +42,10 @@ router.post("/", async (req, res) => {
     consumerVersion,
     consumerBranch
   );
+
+  sseResponses.send({
+    message: `A new contract for ${consumerName} has been published!`,
+  });
 
   comp.compareWithProviderSpecs(contractRecord.consumerContractId);
 
