@@ -4,6 +4,7 @@ import webhook from "../../services/webhookService.js";
 import comp from "../../services/comparisonService.js";
 import { validateSchema } from "../../services/contractSchema.js";
 import YAML from "yaml";
+import { sseResponses } from "./events.js";
 import "express-async-errors";
 
 const router = express.Router();
@@ -65,8 +66,14 @@ router.post("/", async (req, res) => {
 
   if (providerVersion) {
     webhook.providerVerifiedEvent(specRecord);
+    sseResponses.send({
+      message: `${providerName} version ${providerVersion} has been verified!`,
+    });
   } else {
     webhook.newSpecEvent(specRecord);
+    sseResponses.send({
+      message: `A new spec for ${providerName} has been published!`,
+    });
   }
 
   comp.compareWithConsumerContracts(specRecord.providerSpecId);

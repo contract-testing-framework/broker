@@ -1,6 +1,7 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
 import "express-async-errors";
+import { sseResponses } from "./events.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -13,6 +14,10 @@ router.post("/", async (req, res) => {
   }
 
   const environmentRecord = await db.createEnvironment(environmentName);
+
+  sseResponses.send({
+    message: `Environment ${environmentName} has been registered!`,
+  });
 
   res.status(201).json(environmentRecord);
 });
