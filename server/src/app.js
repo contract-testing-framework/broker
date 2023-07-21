@@ -10,6 +10,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import loggers from "./utils/loggers.js";
 import rateLimit from "express-rate-limit";
+import figlet from "figlet";
+import chalk from "chalk";
 
 const app = express();
 
@@ -41,9 +43,22 @@ app.get("/*", (req, res) => {
 const PORT = process.env.PORT;
 
 const server = app.listen(PORT, () => {
-  console.log(
-    `\x1b[92m➜\x1b[0m Server running at\x1b[96m http://localhost:${PORT}\x1b[0m`
-  );
+  figlet("Signet", (err, figletText) => {
+    if (err) {
+      console.log("Something went wrong...");
+      return;
+    }
+    console.clear();
+
+    if (process.env.NODE_ENV !== "test") {
+      console.log(chalk.cyan(figletText));
+    }
+    console.log(
+      `${chalk.green("➜")} Signet server running at ${chalk.yellow(
+        `http://localhost:${PORT}`
+      )}`
+    );
+  });
 });
 
 export default server;
