@@ -17,8 +17,10 @@ const IntegrationOverviewTab = ({ comparisons, onViewContracts }) => {
       {comparisons
         .sort(
           (a, b) =>
-            latest(b.providerSpec.providerVersions).createdAt -
-            latest(a.providerSpec.providerVersions).createdAt
+            (latest(b.providerSpec.providerVersions)?.createdAt ||
+              b.providerSpec.createdAt) -
+            (latest(a.providerSpec.providerVersions)?.createdAt ||
+              a.providerSpec.createdAt)
         )
         .map((comparison) => (
           <ComparisonContainer

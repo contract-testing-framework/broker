@@ -9,6 +9,7 @@ import IntegrationTimeline from "./IntegrationTimeline.jsx";
 import PropTypes from "prop-types";
 import DSU from "../utils/dsu.js";
 import NetworkGraph from "./NetworkGraph.jsx";
+import sse from "../services/sseService";
 
 const Integration = ({ dsu, setIntegrationsFilter }) => {
   const { integrationId } = useParams();
@@ -22,6 +23,14 @@ const Integration = ({ dsu, setIntegrationsFilter }) => {
       setIntegration(data);
     };
     fetchAndSet();
+
+    sse.connect(() => {
+      fetchAndSet();
+    });
+
+    return () => {
+      sse.close();
+    };
   }, [integrationId]);
 
   const handleViewContracts = (comparison) => {

@@ -1,10 +1,16 @@
 import { promises as fs } from "node:fs";
 import { SwaggerMockValidatorFactory } from "../../node_modules/swagger-mock-validator/dist/swagger-mock-validator-factory.js";
+import tmp from "tmp";
+
+tmp.setGracefulCleanup();
 
 export default class Verifier {
   async verify(pact, openAPISpec) {
     try {
-      const [pactPath, OASPath] = await this.createFiles(pact, openAPISpec);
+      const [pactObj, OASobj] = await this.createFiles(pact, openAPISpec);
+
+      const pactPath = pactObj.name;
+      const OASPath = OASobj.name;
 
       const swaggerMockValidator = SwaggerMockValidatorFactory.create();
 
@@ -12,7 +18,7 @@ export default class Verifier {
         mockPathOrUrl: pactPath,
         specPathOrUrl: OASPath,
       });
-
+      this.cleanUpFiles(pactObj, OASobj);
       return result;
     } catch (err) {
       console.error(err);
@@ -20,28 +26,19 @@ export default class Verifier {
   }
 
   async createFiles(pact, openAPISpec) {
-    let { srcDir } = await import("../app.js");
-    const tempDataPath = srcDir + "/data/temp/";
-
-    const pactPath = tempDataPath + "verification_pact.json";
-    const OASPath = tempDataPath + "verification_OAS.json";
+    const pactObj = tmp.fileSync();
+    const oasObj = tmp.fileSync();
 
     await Promise.all([
-      fs.writeFile(pactPath, JSON.stringify(pact)),
-      fs.writeFile(OASPath, JSON.stringify(openAPISpec)),
+      fs.writeFile(pactObj.name, JSON.stringify(pact)),
+      fs.writeFile(oasObj.name, JSON.stringify(openAPISpec)),
     ]);
 
-    return [pactPath, OASPath];
+    return [pactObj, oasObj];
   }
 
-  cleanUpFiles(pactPath, OASPath) {
-    function onError(err) {
-      if (err) {
-        console.error("Failed to cleanup a file. Error: ", err);
-      }
-    }
-
-    fs.unlink(pactPath, onError);
-    fs.unlink(OASPath, onError);
+  cleanUpFiles(pactObj, OASobj) {
+    pactObj.removeCallback();
+    OASobj.removeCallback();
   }
 }

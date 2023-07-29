@@ -4,6 +4,7 @@ import Comparison from "../models/Comparison.js";
 import db from "../db/databaseClient.js";
 import { findAndUpdateOrCreate } from "../utils/queryHelpers.js";
 import webhook from "./webhookService.js";
+import { sseResponses } from "../routes/api/events.js";
 
 class ComparisonService {
   async compare(contractRecord, specRecord, integration) {
@@ -57,6 +58,9 @@ class ComparisonService {
     for (let specRecord of specRecords) {
       await this.compare(contractRecord, specRecord, integration);
     }
+    sseResponses.send({
+      message: "All comparisons finished for new contract!",
+    });
   }
 
   async compareWithConsumerContracts(specId) {
@@ -74,6 +78,7 @@ class ComparisonService {
         await this.compare(contractRecord, specRecord, integration);
       }
     }
+    sseResponses.send({ message: "All comparisons finished for new spec!" });
   }
 }
 

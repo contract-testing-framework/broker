@@ -1,6 +1,4 @@
 import axios from "axios";
-import Participant from "../models/Participant";
-import { unique } from "../utils/helpers";
 
 const getCurrentParticipant = (name, allParticipants) => {
   return allParticipants.find((part) => {
@@ -22,28 +20,10 @@ export const getCurrentParticipantVersions = (name, allParticipants) => {
   return currentVersions;
 };
 
-export const getCurrentEnvironments = (name, allParticipants) => {
-  let allEnvironments = [];
-
-  const currParticipant = getCurrentParticipant(name, allParticipants);
-
-  const allParticipantVersions = getVersions(currParticipant);
-
-  const environments = allParticipantVersions.map((version) => {
-    return version.environments.map((env) => env.name);
-  });
-
-  environments.forEach((env) => {
-    allEnvironments = allEnvironments.concat(env);
-  });
-
-  return unique(allEnvironments);
-};
-
 export const getAllData = async () => {
   const { data } = await axios.get("/api/deploy/data");
   console.log("data:", data);
-  return data.map((datum) => new Participant(datum));
+  return data;
 };
 
 export const readyToDeployResults = async (

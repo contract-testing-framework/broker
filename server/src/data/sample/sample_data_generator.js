@@ -5,11 +5,9 @@ import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
+import tmp from "tmp";
 
-// const randomName = faker.person.fullName(); // Rowan Nikolaus
-// const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
-
-// console.table({ randomName, randomEmail });
+tmp.setGracefulCleanup();
 
 /**
  * Return a random integer between `min` and `max`
@@ -25,57 +23,62 @@ const getRandomInt = function getRandomIntInclusive(min, max) {
 };
 
 const srcDir = dirname(fileURLToPath(import.meta.url));
+console.log(`srcDir = ${srcDir}`);
+const template = fs.readFileSync(srcDir + "/sieveService-sieveProvider.json");
 
-const template = fs.readFileSync(
-  srcDir + "/../data/sample/sieveService-sieveProvider.json"
-);
-
-const randomParticipantName = () =>
+const randomServiceName = () =>
   faker.science.chemicalElement().name.toLowerCase() + "Service";
 
 const generateContract = (consumerName, providerName) => {
-  consumerName = consumerName || randomParticipantName();
-  providerName = providerName || randomParticipantName();
+  consumerName = consumerName || randomServiceName();
+  providerName = providerName || randomServiceName();
 
   const contract = JSON.parse(template);
   contract.consumer.name = consumerName;
   contract.provider.name = providerName;
 
-  const contractPath =
-    srcDir + `/../data/sample/${consumerName}-${providerName}.json`;
+  const tmpObj = tmp.fileSync();
+  const contractPath = tmpObj.name;
 
-  // console.log(contract);
   fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2));
-  return contract;
+  return [contract, contractPath];
 };
 
-const publishContracts = (contract) => {
-  const contractPath =
-    srcDir +
-    `/../data/sample/${contract.consumer.name}-${contract.provider.name}.json`;
-
-  const specPath = srcDir + `/../data/sample/sieve-server-spec_v3.json`;
+const publishContracts = (contract, contractPath) => {
+  const specPath = srcDir + `/sieve-server-spec_v3.json`;
 
   execSync(
-    `${srcDir}/../../../signet publish --path=${contractPath} --type=consumer --version=${
-      "1" || getRandomInt(0, 100)
-    } --branch=main --broker-url=http://localhost:3001`
+    `signet publish --path=${contractPath} --type=consumer --version=${getRandomInt(
+      0,
+      100
+    )} --branch=main --broker-url=http://localhost:3001`
   );
   execSync(
-    `${srcDir}/../../../signet publish --path=${specPath} --type=provider --provider-name=${
+    `signet publish --path=${specPath} --type=provider --name=${
       contract.provider.name
-    } --version=${
-      "A" || getRandomInt(0, 100)
-    } --branch=main --broker-url=http://localhost:3001`
-  );
-
-  execSync(
-    `rm ${srcDir}/../data/sample/${contract.consumer.name}-${contract.provider.name}.json`
+    } --version=${getRandomInt(
+      0,
+      100
+    )} --branch=main --broker-url=http://localhost:3001`
   );
 };
 
-// for (let i = 0; i < 4; i++) {
-publishContracts(generateContract("cobaltService", "magnesiumService"));
-// publishContracts(generateContract(undefined, "platinumService"));
-// publishContracts(generateContract("radiumService"));
-// }
+const generateAndPublish = (consumerName, providerName) => {
+  const [contract, contractPath] = generateContract(consumerName, providerName);
+  publishContracts(contract, contractPath);
+};
+
+const setup1 = () => {
+  const serviceNames = [...Array(2)].map(() => {
+    return randomServiceName();
+  });
+
+  for (let index = 0; index < 6; index++) {
+    generateAndPublish(undefined, serviceNames[0]);
+  }
+
+  generateAndPublish(serviceNames[0], serviceNames[1]);
+  generateAndPublish(serviceNames[1]);
+};
+
+setup1();

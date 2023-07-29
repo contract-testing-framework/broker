@@ -6,6 +6,7 @@ import integrationsRouter from "./integrations.js";
 import webhooksRouter from "./webhooks.js";
 import environmentsRouter from "./environments.js";
 import deployRouter from "./deploy.js";
+import eventsRouter from "./events.js";
 import "express-async-errors";
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.use("/integrations", integrationsRouter);
 router.use("/webhooks", webhooksRouter);
 router.use("/environments", environmentsRouter);
 router.use("/deploy", deployRouter);
+router.use("/events", eventsRouter);
 
 router.use((err, req, res, next) => {
   res.status(403).send({ error: err.message });

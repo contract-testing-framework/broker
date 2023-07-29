@@ -5,6 +5,7 @@ import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Notifications } from "@mantine/notifications";
 
 function Root() {
   const [colorScheme, setColorScheme] = useState("light");
@@ -52,6 +53,7 @@ function Root() {
       >
         <React.StrictMode>
           <Router>
+            <Notifications />
             <App />
           </Router>
         </React.StrictMode>

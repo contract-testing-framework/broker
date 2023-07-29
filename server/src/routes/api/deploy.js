@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
       )),
     ];
 
-    const status = errors.length === 0 ? "true" : "false";
+    const status = errors.length === 0 ? true : false;
 
     return res.send({ status, errors });
   } catch (err) {
@@ -53,8 +53,9 @@ router.get("/", async (req, res) => {
 router.get("/data", async (_req, res) => {
   try {
     const deployData = await db.getDeployGuardData();
+    const allEnvs = await db.getEnvironments();
 
-    res.send(deployData);
+    res.json({ participantData: deployData, allEnvs });
   } catch (error) {
     res.status(400).send({ error: "There are no participants in the system." });
   }

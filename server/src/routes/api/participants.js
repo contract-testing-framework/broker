@@ -1,6 +1,7 @@
 import express from "express";
 import db from "../../db/databaseClient.js";
 import "express-async-errors";
+import { sseResponses } from "./events.js";
 
 const router = express.Router();
 
@@ -36,11 +37,19 @@ router.patch("/", async (req, res) => {
       participantVersionRecord.participantVersionId,
       environmentRecord.environmentId
     );
+
+    sseResponses.send({
+      message: `${participantName} version ${participantVersion} has been deployed to ${environmentName}!`,
+    });
   } else {
     await db.removeParticipantFromEnvironment(
       participantVersionRecord.participantVersionId,
       environmentRecord.environmentId
     );
+
+    sseResponses.send({
+      message: ` ${participantName} version ${participantVersion} has been undeployed from ${environmentName}!`,
+    });
   }
 
   res.status(200).json(req.body);
