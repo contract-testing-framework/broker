@@ -34,8 +34,19 @@ An organization can get started with Signet by following these steps:
 
 # The Signet workflow
 
-Signet broker provides a web interface for inspecting contracts, viewing test results, managing webhooks, and visualizing deployments.
+Signet broker provides a web interface for inspecting contracts, viewing test results, managing webhooks, and visualizing deployments. This section walks through an example of contract testing with Signet when two services want to update the way they integrate.
 
+1. show graph with all services
+2. Shopping Cart service requires a new API endpoint from Inventory service `GET /api/gadgets`. The Shopping Cart team and the Inventory team agree on the new API, and publish the new API spec using the `signet publish` cli command.
+3. Both teams go back to work adding the new functionality to their respective services. The consumer team finishes implementation first. After updating their service tests to validate the new functionality, they use the `signet proxy` cli command to record the API calls that their service makes to their Inventory test double.
+4. `signet proxy` generates a consumer contract. The Shopping Cart team publishes the new consumer contract to broker with `signet publish`, and the broker confirms that the new version of the Shopping Cart service conforms to the API spec.
+5. Before deploying the new version of Shopping Cart, the team uses Signet's Deploy Guard feature to make sure the new Shopping Cart service is compatible with all of the other services in production.
+6. Since the Inventory team has not finished adding the new API endpoint to their service, Deploy Guard reports that the new Shopping Cart service will break if it is deployed to production. The Shopping Cart team postpones the deployment until the new Inventory service is finished. In the meantime, they subscribe their CI/CD pipeline to receive a webhook from the Signet broker when the new Inventory service is completed.
+
+7. Eventually, the Inventory team finishes adding the new endpoint to their service. Unlike the Shopping Cart team, the Inventory team has fully integrated Signet into their CI/CD pipeline, so contract testing is completely automated for them. When the new build of Inventory service is complete, the CI/CD pipeline uses the `signet test` cli command to verify that it correctly implements the API spec. Since it does, the cli reports back to the broker that Inventory service has been successfully tested.
+8. Now, the CI/CD pipeline invokes `signet deploy-guard` to check whether it is safe to deploy the new version of Inventory service. Since the new service has no external dependencies, and it is still compatible with the old version of Shopping Cart (which is currently deployed in production), `signet deploy-guard` reports that all is well. The CI/CD pipeline proceeds to deploy the new version of Inventory Service.
+
+9. When the updated Inventory Service was successfully tested against the API spec, the Shopping Cart team received a webhook from the Signet broker to report the news. Now the team checks Deploy Guard again to see if they can deploy the new version of Shopping Cart. Because all of Shopping Cart's external dependencies in production are compatible, and Shopping Cart is compatible with the Advertising service that depends on it, Deploy Guard says it is safe to deploy. And the Shopping Cart team deploys the new version.
 
 
 
