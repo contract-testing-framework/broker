@@ -49,32 +49,32 @@ Signet's service graph makes it easy to see that advertising_service depends on 
 ![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/shopping%20cart%20publishes%20new%20version%20edited.png)
 
 1. Before deploying the new version of shopping_cart_service, the team uses Signet's Deploy Guard feature to make sure the new shopping_cart_service service is compatible with all of the other services in production.
-![Alt text](<shopping_cart deploy guard fail.png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/shopping_cart%20deploy%20guard%20fail.png)
 
 1. Since the inventory_service team has not finished adding the new API endpoint to their service, Deploy Guard reports that the new shopping_cart_service service will break if it is deployed to production. The shopping_cart_service team postpones the deployment until the new inventory_service service is finished. In the meantime, they subscribe their CI/CD pipeline to receive a webhook from the Signet broker when the new inventory_service service is completed.
-![Alt text](<new inventory webhook .png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/new%20inventory%20webhook%20.png)
 
 1. Eventually, the inventory_service team finishes adding the new endpoint to their service. Unlike the shopping_cart_service team, the inventory_service team has fully integrated Signet into their CI/CD pipeline, so contract testing is completely automated for them. When the new build of inventory_service service is complete, the CI/CD pipeline uses the `signet test` CLI command to verify that it correctly implements the API spec. Since it does, the CLI reports back to the broker that inventory_service service has been successfully tested.
-![Alt text](<inventory test passed.png>)
-![Alt text](<new intventory version tested markedup.png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/inventory%20test%20passed.png)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/new%20intventory%20version%20tested%20markedup.png)
 
 1. After successful provider verification, inventory_service's CI/CD pipeline invokes `signet deploy-guard` to check whether it is safe to deploy the new version of inventory_service service. Since the new service has no external dependencies, and it is still compatible with the old version of shopping_cart_service (which is currently deployed in production), `signet deploy-guard` reports that all is well. The CI/CD pipeline proceeds to deploy the new version of inventory_service Service.
-![Alt text](<new intentory version deploy guard pass.png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/new%20intentory%20version%20deploy%20guard%20pass.png)
 
 1. When the updated inventory_service Service was successfully tested against the API spec, the shopping_cart_service team received a webhook from the Signet broker to report the news. Now the team checks Deploy Guard again to see if they can deploy the new version of shopping_cart_service. Because all of shopping_cart_service's external dependencies in production are compatible, and shopping_cart_service is compatible with the Advertising service that depends on it, Deploy Guard says it is safe to deploy. The shopping_cart_service team can now deploy the new version with confidence that no breaking changes will be introduced into production.
-![Alt text](<shopping cart safe to deploy.png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/shopping%20cart%20safe%20to%20deploy.png)
 
 1.  At any time, either team can use the matrix view to explore the state of each pair of consumer and provider service versions:
-![Alt text](Matrix.png)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/Matrix.png)
 
 1.  The timeline view records the history of events:
-![Alt text](timeline.png)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/timeline.png)
 
 1.  Teams can view the requirements listed in the consumer contract:
-![Alt text](<consumer interactions expanded.png>)
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/consumer%20interactions%20expanded.png)
 
 1.  They can also check the provider API spec:
-![Alt text](<provider spec expanded.png>)
+![Alt text]([<provider spec expanded.png>](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/provider%20spec%20expanded.png))
 
 &nbsp;
 ## Setting up the broker in development mode
