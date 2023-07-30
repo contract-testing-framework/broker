@@ -40,12 +40,12 @@ Signet broker provides a web interface for inspecting contracts, viewing test re
 ![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/image.png)
 Signet's service graph makes it easy to see that advertising_service depends on shopping_cart_service, and shopping_cart_service depends on inventory_service and payments_service.
 
-2. What happens if shopping_cart_service needs a new feature that requires a new API endpoint from inventory_service? The shopping_cart_service team and the inventory_service team first agree on the new API endpoint--`GET /api/gadgets/:gadgetId`. Then they publish an updated API spec for inventory_service using the `signet publish` CLI command, and both teams get to work updating their respective services.
+1. What happens if shopping_cart_service needs a new feature that requires a new API endpoint from inventory_service? The shopping_cart_service team and the inventory_service team first agree on the new API endpoint--`GET /api/gadgets/:gadgetId`. Then they publish an updated API spec for inventory_service using the `signet publish` CLI command, and both teams get to work updating their respective services.
 
-3. The shopping_cart_service team finishes their implementation first. After updating their test double of inventory_service, they use service tests to validate the new functionality of shopping_cart_service. They use the `signet proxy` CLI command to record the API calls that shopping_cart_service makes to the inventory_service test double.
+2. The shopping_cart_service team finishes their implementation first. After updating their test double of inventory_service, they use service tests to validate the new functionality of shopping_cart_service. They use the `signet proxy` CLI command to record the API calls that shopping_cart_service makes to the inventory_service test double.
 ![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/image-1.png)
 
-4. `signet proxy` generates a consumer contract. The shopping_cart_service team publishes the new consumer contract to the broker with `signet publish`, and the broker confirms that the new version of the shopping_cart_service service conforms to the API spec.
+1. `signet proxy` generates a consumer contract. The shopping_cart_service team publishes the new consumer contract to the broker with `signet publish`, and the broker confirms that the new version of the shopping_cart_service service conforms to the API spec.
 ![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/shopping%20cart%20publishes%20new%20version%20edited.png)
 
 1. Before deploying the new version of shopping_cart_service, the team uses Signet's Deploy Guard feature to make sure the new shopping_cart_service service is compatible with all of the other services in production.
@@ -74,7 +74,7 @@ Signet's service graph makes it easy to see that advertising_service depends on 
 ![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/consumer%20interactions%20expanded.png)
 
 1.  They can also check the provider API spec:
-![Alt text]([<provider spec expanded.png>](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/provider%20spec%20expanded.png))
+![Alt text](https://github.com/signet-framework/signet-broker/blob/readme_update/readme_assets/provider%20spec%20expanded.png)
 
 &nbsp;
 ## Setting up the broker in development mode
