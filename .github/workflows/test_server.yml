@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:http://localhost:3001
+jobs:
   Test:
     runs-on: ubuntu-latest
     defaults:
