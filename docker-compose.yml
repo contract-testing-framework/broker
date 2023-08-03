@@ -2,9 +2,6 @@ version: '3'
 
 services:
   broker:
-    # build:
-      # context: .
-      # dockerfile: Dockerfile
     image: signetframework/signet-broker:latest
     container_name: signet-broker
     deploy:
@@ -13,7 +10,6 @@ services:
     restart: unless-stopped
     depends_on:
       - db
-    # env_file: .env
     environment:
       - PORT=3001
       - NODE_ENV=production
@@ -21,8 +17,6 @@ services:
       - RDS_HOSTNAME=db
       - RDS_DB_NAME=postgres
       - RDS_PASSWORD=browni3s
-      # - RDS_PORT=5432
-      # - ENABLE_DB_SSL=true
     ports:
       - "3001:3001"
     networks:
@@ -38,13 +32,8 @@ services:
       restart_policy:
         condition: on-failure
     container_name: db
-    # env_file: .env
-    # environment:
-      # - POSTGRES_PASSWORD=
-      # - POSTGRES_DB=postgres
     volumes:
       - dbdata:/data/db
-      # - ./src/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       - app-network
 networks:
