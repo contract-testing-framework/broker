@@ -65,7 +65,7 @@ Signet's service graph makes it easy to see that advertising_service depends on 
 ![shopping_cart_deploy_guard_pass](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/shopping_cart_deploy_guard_pass.png)
 
 1. At any time, either team can use the matrix view to explore the state of each pair of consumer and provider service versions:
-![matrix](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/matrix.png)
+![matrix](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/comparison_matrix.png)
 
 1. The timeline view records the history of events:
 ![timeline](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/timeline.png)
