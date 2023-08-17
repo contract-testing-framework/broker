@@ -9,6 +9,9 @@ import tmp from "tmp";
 
 tmp.setGracefulCleanup();
 
+// const brokerUrl = "https://signet-broker-wfq99.ondigitalocean.app";
+const brokerUrl = "http://localhost:3001";
+
 /**
  * Return a random integer between `min` and `max`
  * (both inclusive)
@@ -51,15 +54,12 @@ const publishContracts = (contract, contractPath) => {
     `signet publish --path=${contractPath} --type=consumer --version=${getRandomInt(
       0,
       100
-    )} --branch=main --broker-url=http://localhost:3001`
+    )} --branch=main --broker-url=${brokerUrl}`
   );
   execSync(
     `signet publish --path=${specPath} --type=provider --name=${
       contract.provider.name
-    } --version=${getRandomInt(
-      0,
-      100
-    )} --branch=main --broker-url=http://localhost:3001`
+    } --version=${getRandomInt(0, 100)} --branch=main --broker-url=${brokerUrl}`
   );
 };
 
@@ -82,3 +82,7 @@ const setup1 = () => {
 };
 
 setup1();
+
+// const serviceNames = ["shoppingCartService", "paymentService"];
+
+// generateAndPublish(serviceNames[0], serviceNames[1]);

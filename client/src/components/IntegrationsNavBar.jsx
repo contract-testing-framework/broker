@@ -13,6 +13,7 @@ const IntegrationsNavBar = ({
   integrationsFilter,
   setIntegrationsFilter,
   filteredIntegrations,
+  hidden,
 }) => {
   // const navigate = useNavigate();
 
@@ -26,7 +27,12 @@ const IntegrationsNavBar = ({
   );
 
   return (
-    <Navbar p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+    <Navbar
+      p="md"
+      hiddenBreakpoint="sm"
+      width={{ sm: 200, lg: 300 }}
+      hidden={hidden}
+    >
       <Flex style={{ marginBottom: "1rem" }} align={"center"}>
         <MultiSelect
           style={{ flexGrow: "1" }}
@@ -55,6 +61,7 @@ IntegrationsNavBar.propTypes = {
     .isRequired,
   integrationsFilter: PropTypes.arrayOf(PropTypes.string).isRequired,
   setIntegrationsFilter: PropTypes.func.isRequired,
+  hidden: PropTypes.bool.isRequired,
 };
 
 export default IntegrationsNavBar;
