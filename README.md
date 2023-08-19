@@ -28,7 +28,7 @@ An organization can get started with Signet by following these steps:
 1. Install the [signet-cli](https://github.com/signet-framework/signet-cli)
 2. Self host the Signet broker in one of the following ways:
    - Deploy the Signet broker to AWS with the `signet deploy` CLI command.
-   - Download Signet's [docker-compose.yml](https://github.com/signet-framework/signet-broker/blob/main/server/docker-compose.yml) and run `docker-compose up`.
+   - Download Signet's [docker-compose.yml](https://github.com/signet-framework/signet-broker/blob/main/docker-compose.yml) and run `docker-compose up`.
 
 &nbsp;
 
@@ -58,10 +58,10 @@ Signet's service graph makes it easy to see that advertising_service depends on 
 ![inventory_verification](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/inventory_verification.png)
 ![inventory_version_published](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/inventory_version_published.png)
 
-1. After successful provider verification, inventory_service's CI/CD pipeline invokes `signet deploy-guard` to check whether it is safe to deploy the new version of inventory_service service. Since the new service has no external dependencies, and it is still compatible with the old version of shopping_cart_service (which is currently deployed in production), `signet deploy-guard` reports that all is well. The CI/CD pipeline proceeds to deploy the new version of inventory_service Service.
+1. After successful provider verification, inventory_service's CI/CD pipeline invokes `signet deploy-guard` to check whether it is safe to deploy the new version of inventory_service service. Since the new service has no external dependencies, and it is still compatible with the old version of shopping_cart_service (which is currently deployed in production), `signet deploy-guard` reports that all is well. The CI/CD pipeline proceeds to deploy the new version of inventory_service.
 ![inventory_deploy_guard_pass](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/inventory_deploy_guard_pass.png)
 
-1. When the updated inventory_service Service was successfully tested against the API spec, the shopping_cart_service team received a webhook from the Signet broker to report the news. Now the team checks Deploy Guard again to see if they can deploy the new version of shopping_cart_service. Because all of shopping_cart_service's external dependencies in production are compatible, and shopping_cart_service is compatible with the Advertising service that depends on it, Deploy Guard says it is safe to deploy. The shopping_cart_service team can now deploy the new version with confidence that no breaking changes will be introduced into production.
+1. When the updated inventory_service was successfully tested against the API spec, the shopping_cart_service team received a webhook from the Signet broker to report the news. Now the team checks Deploy Guard again to see if they can deploy the new version of shopping_cart_service. Because all of shopping_cart_service's external dependencies in production are compatible, and shopping_cart_service is compatible with the advertising_service that depends on it, Deploy Guard says it is safe to deploy. The shopping_cart_service team can now deploy the new version with confidence that no breaking changes will be introduced into production.
 ![shopping_cart_deploy_guard_pass](https://github.com/signet-framework/signet-broker/blob/main/readme_assets/shopping_cart_deploy_guard_pass.png)
 
 1. At any time, either team can use the matrix view to explore the state of each pair of consumer and provider service versions:
