@@ -7,6 +7,7 @@ const proxyPort = process.env.PROXY_PORT || 3001;
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "./",
   server: {
     proxy: {
       "/api/": {

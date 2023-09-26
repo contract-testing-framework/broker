@@ -4,6 +4,14 @@ import tmp from "tmp";
 
 tmp.setGracefulCleanup();
 
+const executionTimer = async function (func, ...args) {
+  const label = func.name.padEnd(25);
+  console.time(label);
+  const result = await func(...args);
+  console.timeEnd(label);
+  return result;
+};
+
 export default class Verifier {
   async verify(pact, openAPISpec) {
     try {
@@ -42,3 +50,16 @@ export default class Verifier {
     OASobj.removeCallback();
   }
 }
+
+import pact from "../data/sample/samplePact.js";
+import openAPISpec from "../data/sample/sampleOAS.js";
+(async () => {
+  const verifier = new Verifier();
+  // console.log("pact", pact);
+  // console.log("openAPISpec", openAPISpec);
+  const label = "verify".padEnd(25);
+  // executionTimer(verifier.verify, pact, openAPISpec);
+  console.time(label);
+  await verifier.verify(pact, openAPISpec);
+  console.timeEnd(label);
+})();
