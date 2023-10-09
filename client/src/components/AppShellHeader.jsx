@@ -21,6 +21,15 @@ const AppShellHeader = ({
 }) => {
   const navigate = useNavigate();
 
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  let bannerStyle = {};
+
+  if (isSafari) {
+    bannerStyle = {
+      maxWidth: "200px",
+    };
+  }
+
   return (
     <Header height={{ base: 50, md: 70 }} p="md">
       <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
@@ -37,7 +46,12 @@ const AppShellHeader = ({
         <Link to={"/"}>
           <Anchor component="span">
             <Group>
-              <Image src="/transparent-logo-horizontal-mn.svg" height={97} />
+              <Image
+                src="/transparent-logo-horizontal-mn.svg"
+                height={97}
+                style={bannerStyle}
+                id="banner-contain"
+              />
             </Group>
           </Anchor>
         </Link>
