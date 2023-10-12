@@ -7,10 +7,10 @@ import { fileURLToPath } from "url";
 const srcDir = dirname(fileURLToPath(import.meta.url));
 
 const reqLogString =
-  '[:date[web]] REQ ":method :url HTTP/:http-version" - :req[Ngrok-Auth-User-Email]';
+  '[:date[web]] REQ :remote-addr via :referrer ":method :url HTTP/:http-version" - :req[Ngrok-Auth-User-Email]';
 
 const resLogString =
-  '[:date[web]] RES ":method :url HTTP/:http-version" - :req[Ngrok-Auth-User-Email] - :status - :res[content-length] bytes in :response-time[3] ms';
+  '[:date[web]] RES :remote-addr via :referrer ":method :url HTTP/:http-version" - :req[Ngrok-Auth-User-Email] - :status - :res[content-length] bytes in :response-time[3] ms';
 
 const accessLogStream = rfs.createStream("access.log", {
   interval: "1d",
