@@ -28,6 +28,7 @@ export const srcDir = dirname(fileURLToPath(import.meta.url));
 
 app.use(morgan("dev"));
 app.use(loggers.file.res());
+app.use(loggers.file.req());
 
 app.use(express.static(srcDir + "/../dist"));
 
